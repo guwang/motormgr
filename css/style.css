@@ -1,0 +1,269 @@
+/* the pre markup was derived from rubyStyle.css, the rest is from previous
+iterations of my website http://repose.cx/. help yourself to bits you like. */
+
+body {
+    font-family: Verdana, Tahoma, Arial, sans-serif, 微软雅黑;
+    font-size: 12px;
+   /*background: #bbccdd; */
+   background: #B0E3BD;
+  /*font: 100%;*/
+/*  padding-left: 1%;  */
+   padding-left: 5px;
+/*  padding-right: 1%; */
+   padding-right: 5px;
+/*  padding-top: 1em;
+  padding-bottom: 1em; */
+  margin: 0;
+}
+
+form {
+  display: inline;
+  /*border: 1px dotted #aaaaaa;*/
+  /*padding: 3px 6px 3px 6px;*/
+}
+
+input {
+  border: 1px solid #00008B;
+}
+
+input.txt {
+/*  border: 1px solid #00008B;*/
+  color: #00008b;
+  background-color: #ADD8E6;
+  border: 1px solid #00008B;
+}
+
+select {
+  border: 1px solid #00008B;
+  color: #00008B;
+/*  background-color: #ADD8E6;*/
+  border: 1px solid #00008B;
+}
+
+/*
+btn {
+  border: 1px inset #aaaaaa;
+  padding: 0px 5px 0px 5px;
+  height: 5px;
+}
+*/
+
+input.btn {
+  BORDER-RIGHT: #7b9ebd 1px solid; 
+  PADDING-RIGHT: 2px; 
+  BORDER-TOP: #7b9ebd 1px solid; 
+  PADDING-LEFT: 2px; 
+  FONT-SIZE: 12px; 
+  FILTER: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr=#ffffff, EndColorStr=#cecfde); 
+  BORDER-LEFT: #7b9ebd 1px solid; 
+  CURSOR: hand; 
+  COLOR: black; 
+  PADDING-TOP: 1px; 
+  BORDER-BOTTOM: #7b9ebd 1px solid;
+  height: 22px;
+}
+
+
+
+select {
+  position:relative;
+  left:0px;
+  top:1px;
+  /*font-size:12px;*/
+  /*width:125px;*/
+  line-height:18px;
+  border:0px;
+  color:#909993;
+}
+
+
+ 
+a {
+  font-weight: bold;
+  text-decoration: none;
+  color: navy;
+}
+
+a:hover {
+  background: blue;
+  color: yellow;
+}
+
+/*
+h1 {
+  font-family: DejaVu Sans, Bitstream Vera Sans, Tahoma, SimHei, sans-serif;
+  font-size: 32px;
+  color: #666;
+  padding: 2px;
+  margin-left: -40px;
+  margin-bottom: 8px;
+  border-bottom: 5px solid #000;
+}
+*/
+
+h1 {
+  font-family: Verdana, Tahoma, Arial, sans-serif, 微软雅黑;
+  font-size: 20px;
+  text-align: center;
+  color: navy;
+  /* background: white url(images/glossy-back2.gif) repeat-x bottom left; */
+  /* background: #efefbb; */
+  background: #ffffd6;
+  border-top: ButtonHighlight 1px solid;
+  border-bottom: ButtonShadow 1px solid;
+  border-left: ButtonHighlight 1px solid;
+  border-right: ButtonShadow 1px solid;
+  /* border-bottom-width: 0; */
+  padding: 2px;
+  padding-left: 0px;
+  margin-left: 0px;
+  margin-top: 3px;
+  margin-bottom: 2px;
+}
+
+h2 {
+  font-family: Verdana, Tahoma, Arial, sans-serif, 微软雅黑;
+  font-size: 20px;
+  color: #111;
+  /* background: white url(images/glossy-back1.gif) repeat-x bottom left; */
+  background: #bbccdd;
+  border-top: 1px solid royalblue;
+  /* border-bottom: 1px solid royalblue;
+  border-left: 8px solid royalblue;
+  border-right: 2px dashed royalblue; */
+  padding: 2px;
+  padding-left: 5px;
+  margin-left: 0px;
+  margin-top: 5px;
+
+}
+
+h3 {
+  font-family: Verdana, Tahoma, Arial, sans-serif, 微软雅黑;
+  font-size: 18px;
+  color: #222;
+  /* border-top: 1px solid royalblue; */
+  border-bottom: 2px solid royalblue;
+  /* border-left: 5px solid royalblue;
+  border-right: 2px dashed royalblue; */
+  padding: 2px;
+  padding-left: 5px;
+  margin-left: 0px;
+  margin-top: 5px;
+  margin-bottom: -12px;
+}
+
+h4 {
+  font-family: Verdana, Tahoma, Arial, sans-serif, 微软雅黑;
+  font-size: 16px;
+  color: #333;
+  background: url(images/dot.gif) no-repeat 2px center;
+  padding: 2px;
+  padding-left: 20px;
+  /* border-top: 1px solid royalblue; */
+  border-bottom: 1px solid royalblue;
+  /* border-left: 2px solid royalblue; */
+  /* border-right: 2px dotted royalblue; */
+}
+
+img {
+  background: white;
+  float: none;
+  margin-bottom: -5px;
+  border-style: solid;
+  border-width: 2px;
+  /* border-color: #00008b; */
+  border-color: lightgrey;
+}
+
+#im {
+  clear: right;
+}
+
+pre {
+  font: 12px/1.2 DejaVu Sans Mono, Courier, Courier New, monospace;
+  border: #777 1px solid;
+  padding: 0.5em;
+  margin-left: 2em;
+  margin-right: 2em;
+  white-space: pre;
+  background-color: #e6e6e6;
+  color: black;
+}
+
+.verse {
+  white-space: pre;
+  margin-left: 1em;
+}
+
+dt {
+  font-weight: bold;
+}
+
+
+table {
+  margin-top: 2px;
+/*  margin-bottom: 1em; 
+  width: 100%;  
+  border-color: navy  */
+  border: 1px solid black;
+  border: 0;
+ /* pacing: 0;
+  padding: 0;*/
+  /*background-color: #666600;*/
+  border-collapse: collapse;
+}
+
+.grid {
+    border: 0;
+}
+
+tr {
+  height: 5px;
+  /*background-color: #DDEECC;
+   background-color: expression((this.rowIndex%2==0)?"#DDEECC":"#FFCCFF"); 
+  star : expression(onmouseover=function() {this.style.backgroundColor="#66CCCC"}, onmouseout=function(){this.style.backgroundColor="";})*/
+}
+
+th {
+  font-size: 12px;
+  border: 1px;
+  padding-left: 3px;
+  padding-right: 2px;
+  overflow: hidden;
+  background: #ffffbb;
+  border: 1px solid black;
+/*  pacing: 0;
+  padding: 0;*/
+}
+
+.grid {
+    border: 0;
+    border-collapse: collapse;
+}
+
+.list {
+    font-size: 85%;
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+
+td {
+  margin: 0;
+  font-size: 12px;
+  border: 1px;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 3px;
+  padding-right: 2px;
+  overflow: hidden;
+  border: 1px solid black;
+/*  background: #ddeecc;*/
+
+  pacing: 0;
+ /* padding: 0;*/
+ /* text-align: center;*/
+ /* text-align: expression((this.cellIndex==0)?"center":"left"); */
+}
+
