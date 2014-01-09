@@ -29,6 +29,10 @@ $conf['server'][0]['defaultdb'] = 'prod';
 
 $adminmail="guirong.wang@dhl.com";
 
+//警告颜色, 1,2,3分别为红色,橙色,黄色
+$alert_color1 = "#FF2608";
+$alert_color2 = "#FFA500";
+$alert_color3 = "#FFFF00";
 
 function fun_get_cip(){                    //»ñÈ¡¿Í»§¶ËIPµØÖ·
   if ($_SERVER["HTTP_X_FORWARDED_FOR"]) {

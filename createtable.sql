@@ -171,7 +171,7 @@ CREATE TABLE "motor-status"
   id serial NOT NULL,
   bdate date,
   siteid character varying(50),
-  status integer DEFAULT 0,
+  status character varying(1) DEFAULT 0,
   uid integer,
   uptime timestamp without time zone,
   CONSTRAINT "motor-status_pkey" PRIMARY KEY (id),
@@ -185,9 +185,7 @@ ALTER TABLE "motor-status"
 
 
 -- Table: sysconf
-
 -- DROP TABLE sysconf;
-
 CREATE TABLE sysconf
 (
   id serial NOT NULL,

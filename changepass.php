@@ -50,7 +50,7 @@ echo '<tr><td class=grid></td>
 echo '</table>';
 echo '</form>';
 
-echo "$pass1<br>$pass2<br>$pass3";
+//echo "$pass1<br>$pass2<br>$pass3";
 
 //if($pass1 & $pass2 & ($pass2 == $pass3)){
 if($pass1 & $pass2 & $pass3){

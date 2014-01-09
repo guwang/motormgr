@@ -99,13 +99,13 @@
 	<li><a href="#">电机状态</a>
 	  <ul>
 	    <li><a href="main.php">基本信息</a></li>
-	  </ul>
+	    <li><a href="info-maintaincheck.php">维护检修信息</a></li>
+          </ul>
 	  <div class="clear"></div>
 	</li>
 	<li><a href="#">日常操作</a>
 	  <ul>
-	    <li><a href="weektask.php">本周任务</a></li>
-	    <li><a href="monthtask.php">本月任务</a></li>
+	    <li><a href="weektask.php">日常录入</a></li>
 	    <li><a href="issuetask.php">分发任务</a></li>
 	  </ul>
 	  <div class="clear"></div>
