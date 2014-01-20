@@ -80,6 +80,7 @@ while($row = $sth->fetch()){
     }
   }else{
     $days_w = "";
+    $days_w_next = "";
     $date_w_next = "";
   }
   if($date_j){
@@ -94,6 +95,7 @@ while($row = $sth->fetch()){
   }else{
     $days_j = "";
     $days_j_next = "";
+    $date_j_next = "";
   }
 
   echo "<tr><td align=center>$intId</td><td>$siteid</td><td>$row[2]</td><td>$row[3]</td>";
