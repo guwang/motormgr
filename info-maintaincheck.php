@@ -61,11 +61,11 @@ echo '<table>';
 echo '<tr><th>序号</th><th>安装位址</th><th>设备位号</th><th>设备名称</th><th>维护周期</th><th>检修周期</th><th>维护人员</th><th>上次维护时间</th><th>维护后运行总数</th><th>下次维护时间</th><th>距离下次维护</th><th>上次检修时间</th><th>检修后运行总数</th><th>下次检修时间</th><th>距离下次检修</th></tr>';
 $intId = 1;
 while($row = $sth->fetch()){
-  $days_w_set = $row[4];
-  $days_j_set = $row[5];
-  $siteid = $row[1];
-  $date_w = $row[7];
-  $date_j = $row[8];
+  $days_w_set = $row[4];    //维护周期
+  $days_j_set = $row[5];    //检修周期
+  $siteid = $row[1];        //设备位号
+  $date_w = $row[7];        //上次维护日期
+  $date_j = $row[8];        //上次检修日期
 
   //  echo "<br />days_w_set:$days_w_set";
 
@@ -105,8 +105,6 @@ while($row = $sth->fetch()){
     echo "<td align=center style={background-color:$alert_color1;}>$days_w_next</td>";
   }else if(($days_w_set > 0) & ($days_w_set - $days_w < 5)){
     echo "<td align=center style={background-color:$alert_color2;}>$days_w_next</td>";
-  }else if(($days_w_set > 0) & ($days_w_set - $days_w < 10)){
-    echo "<td align=center style={background-color:$alert_color3;}>$days_w_next</td>";
   }else{
     echo "<td align=center>$days_w_next</td>";
   }
@@ -116,10 +114,8 @@ while($row = $sth->fetch()){
     echo "<td align=center style={background-color:$alert_color1;}>$days_j_next</td></tr>";
   }else if(($days_j_set > 0) & ($days_j_set - $days_j < 0)){
     echo "<td align=center style={background-color:$alert_color1;}>$days_j_next</td></tr>";
-  }else if(($days_j_set > 0) & ($days_j_set - $days_j < 15)){
-    echo "<td align=center style={background-color:$alert_color2;}>$days_j_next</td></tr>";
   }else if(($days_j_set > 0) & ($days_j_set - $days_j < 30)){
-    echo "<td align=center style={background-color:$alert_color3;}>$days_j_next</td></tr>";
+    echo "<td align=center style={background-color:$alert_color2;}>$days_j_next</td></tr>";
   }else{
     echo "<td align=center>$days_j_next</td></tr>";
   }
