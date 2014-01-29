@@ -119,7 +119,7 @@
 	</li>
 	<li><a href="#">个人设置</a>
 	  <ul>
-	    <li><a href="#">个人信息</a></li>
+	    <li><a href="userinfo.php">个人信息</a></li>
 	    <li><a href="changepass.php">更改密码</a></li>
 	  </ul>			
 	  <div class="clear"></div>
