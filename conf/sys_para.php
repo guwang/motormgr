@@ -1,23 +1,6 @@
 <?php
 header('Content-Type: text/html; charset=UTF-8');
 
-$ssqlserver="10.210.136.18";
-$ssqluser="phpuser";
-$ssqlpass="yinti2009";
-
-//$smysqlserver="127.0.0.1";
-//$smysqlserver="localhost";
-$smysqlserver="10.210.136.19";
-$smysqlport=3306;
-$smysqltype="mysql";
-$smysqluser="buserstandard";
-$smysqlpass="qianli";
-$smysqlsystem="msystem";
-
-$smysql_db="mdata_2009";
-$smysql_db_ar="mdata_2008";
-
-
 $conf['server'][0]['desc'] = 'PostgreSQL';
 $conf['server'][0]['type'] = 'pgsql';
 $conf['server'][0]['host'] = 'localhost';
@@ -34,7 +17,7 @@ $alert_color1 = "#FF2608";
 $alert_color2 = "#FFA500";
 $alert_color3 = "#FFFF00";
 
-function fun_get_cip(){                    //»ñÈ¡¿Í»§¶ËIPµØÖ·
+function fun_get_cip(){                    
   if ($_SERVER["HTTP_X_FORWARDED_FOR"]) {
     if ($_SERVER["HTTP_CLIENT_IP"]) {
       $proxy = $_SERVER["HTTP_CLIENT_IP"];
@@ -56,7 +39,7 @@ function fun_get_cip(){                    //»ñÈ¡¿Í»§¶ËIPµØÖ·
   return($ip);
 }
 
-function funBarryStr1($str){       //½«ÐÎÈçGPC3270,GSS3000,BFA5010µÄ×Ö·û´®¼ÓÉÏµ¥ÒýºÅ,±ä³ÉÐÎÈç 'GPC3270','GSS3000','BFA5010'
+function funBarryStr1($str){       //GPC3270,GSS3000,BFA5010 => 'GPC3270','GSS3000','BFA5010'
   $arr=explode(",",$str);
   $strL="";
   for($i=0;$i<sizeof($arr);$i++){
@@ -71,7 +54,7 @@ function funBarryStr1($str){       //½«ÐÎÈçGPC3270,GSS3000,BFA5010µÄ×Ö
 }
 
 
-function funBarryPerNum($str){    //½«ÐÎÈçJAN08µÄÆÚ¼ä¸ñÊ½×ª»»ÎªÐÎÈç200801¸ñÊ½
+function funBarryPerNum($str){    //JAN08 => 200801
   $str=trim($str);
   $str=strtoupper($str);
   $mon=substr($str,0,3);
@@ -145,13 +128,13 @@ function funPeriodReduce($perin){
 }
 
 
-function fun_file_wipe_null($file){           /* È¥³ýÎÄ¼þÖÐµÄ\N */
+function fun_file_wipe_null($file){           /* delete \N */
   $body = file_get_contents($file);
   $body2 = str_replace("\N", "", $body);
   unlink($file);
   $handle = fopen ($file,"w");
   fwrite ($handle,$body2);
-  fclose ($handle);                           //¹Ø±ÕÖ¸Õë
+  fclose ($handle);
 }
 
 function fun_file_wipe_quota($file){           /* È¥³ýÎÄ¼þÖÐµÄË«ÒýºÅ */
