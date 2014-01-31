@@ -174,25 +174,25 @@ while($row = $sth->fetch()){
   echo "<td>$row[3]</td><td>$row[4]</td><td>$row[5]</td>";
   
   //  echo "<br />$siteid: $days_w_set - $days_w";
-  if(($days_w_set > 0) & ($days_w == "")){
+  if(($days_w_set > 0) && ($days_w == 0) && ($date_w != $date)){
     echo "<td align=center style={background-color:$alert_color1;}>$days_w</td>";
-  }else if(($days_w_set > 0) & ($days_w_set - $days_w < 0)){
+  }else if(($days_w_set > 0) && ($days_w_set - $days_w < 0)){
     echo "<td align=center style={background-color:$alert_color1;}>$days_w</td>";
-  }else if(($days_w_set > 0) & ($days_w_set - $days_w < 5)){
+  }else if(($days_w_set > 0) && ($days_w_set - $days_w < 5)){
     echo "<td align=center style={background-color:$alert_color2;}>$days_w</td>";
-  }else if(($days_w_set > 0) & ($days_w_set - $days_w < 10)){
+  }else if(($days_w_set > 0) && ($days_w_set - $days_w < 10)){
     echo "<td align=center style={background-color:$alert_color3;}>$days_w</td>";
   }else{
     echo "<td align=center>$days_w</td>";
   }
 
-  if(($days_j_set > 0) & ($days_j == "")){
+  if(($days_j_set > 0) && ($days_j == 0) && ($date_j != $date)){
     echo "<td align=center style={background-color:$alert_color1;}>$days_j</td>";
-  }else if(($days_j_set > 0) & ($days_j_set - $days_j < 0)){
+  }else if(($days_j_set > 0) && ($days_j_set - $days_j < 0)){
     echo "<td align=center style={background-color:$alert_color1;}>$days_j</td>";
-  }else if(($days_j_set > 0) & ($days_j_set - $days_j < 15)){
+  }else if(($days_j_set > 0) && ($days_j_set - $days_j < 15)){
     echo "<td align=center style={background-color:$alert_color2;}>$days_j</td>";
-  }else if(($days_j_set > 0) & ($days_j_set - $days_j < 30)){
+  }else if(($days_j_set > 0) && ($days_j_set - $days_j < 30)){
     echo "<td align=center style={background-color:$alert_color3;}>$days_j</td>";
   }else{
     echo "<td align=center>$days_j</td>";
