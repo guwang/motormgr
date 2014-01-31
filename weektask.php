@@ -207,13 +207,25 @@ while($row = $sth->fetch()){
     $sth_getvalue -> bindValue(':d1', $date_print, PDO::PARAM_STR);
     $sth_getvalue -> execute();
     if($sth_getvalue -> rowCount() == 0){
-      $sth_adddefault = $dbh->prepare('insert into "motor-status"("bdate","siteid","uid","uptime") values(:d1,:s1,:i1,:t1)');
+      $sth_getpre = $dbh->prepare('select "status" from "motor-status" where "siteid"=:s and "bdate" in(SELECT max("bdate") FROM "motor-status" where "siteid"=:s)');
+      $sth_getpre -> bindValue(':s', $siteid, PDO::PARAM_STR);
+      $sth_getpre -> execute();
+      $row_getpre = $sth_getpre -> fetch();
+      $status_pre = $row_getpre[0];
+      if($status_pre != "0"){
+	$status_pre = "1"; 
+	$status_getvalue = "1";
+      }else{
+	$status_pre = "0";
+	$status_getvalue = "0";
+      }
+      $sth_adddefault = $dbh->prepare('insert into "motor-status"("bdate","siteid","uid","uptime","status") values(:d1,:s1,:i1,:t1,:s2)');
       $sth_adddefault -> bindValue(':d1', $date_print, PDO::PARAM_STR);
       $sth_adddefault -> bindValue(':s1', $siteid, PDO::PARAM_STR);
       $sth_adddefault -> bindValue(':i1', $_SESSION['user']['uid'], PDO::PARAM_INT);
       $sth_adddefault -> bindValue(':t1', $now, PDO::PARAM_STR);
+      $sth_adddefault -> bindValue(':s2', $status_pre, PDO::PARAM_STR);
       $sth_adddefault -> execute();
-      $status_getvalue = 0;
       $temp1_getvalue = 0;
       $temp2_getvalue = 0;
       $shake1_getvalue = 0;
@@ -283,22 +295,22 @@ while($row = $sth->fetch()){
       }
     }else{
       echo "<td style={text-align:center;}>$status_getvalue</td>";
-      if(($temp1_getvalue == 0 && $power > 50) || $temp1_getvalue > 75){
+      if(($temp1_getvalue == 0 && $power > 50 && $status_getvalue != "0") || $temp1_getvalue > 75){
 	echo "<td style={text-align:center;color:#FF2608;}>$temp1_getvalue</td>";
       }else{
 	echo "<td style={text-align:center;}>$temp1_getvalue</td>";
       }
-      if(($temp2_getvalue == 0 && $power > 50) || $temp2_getvalue > 75){
+      if(($temp2_getvalue == 0 && $power > 50 && $status_getvalue != "0") || $temp2_getvalue > 75){
 	echo "<td style={text-align:center;color:#FF2608;}>$temp2_getvalue</td>";
       }else{
 	echo "<td style={text-align:center;}>$temp2_getvalue</td>";
       }
-      if(($shake1_getvalue == 0 && $power > 50) || $shake1_getvalue > 2.8){
+      if(($shake1_getvalue == 0 && $power > 50 && $status_getvalue != "0") || $shake1_getvalue > 2.8){
 	echo "<td style={text-align:center;color:#FF2608;}>$shake1_getvalue</td>";
       }else{
 	echo "<td style={text-align:center;}>$shake1_getvalue</td>";
       }
-      if(($shake2_getvalue == 0 && $power > 50) || $shake2_getvalue > 2.8){
+      if(($shake2_getvalue == 0 && $power > 50 && $status_getvalue != "0") || $shake2_getvalue > 2.8){
 	echo "<td style={text-align:center;color:#FF2608;}>$shake2_getvalue</td>";
       }else{
 	echo "<td style={text-align:center;}>$shake2_getvalue</td>";
