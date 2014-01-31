@@ -164,19 +164,18 @@ CREATE UNIQUE INDEX uname
   (uname COLLATE pg_catalog."default");
 
 
-
 -- Table: "motor-status"
-
 -- DROP TABLE "motor-status";
-
 CREATE TABLE "motor-status"
 (
   id serial NOT NULL,
   bdate date,
   siteid character varying(50),
   status character varying(1) DEFAULT 0,
-  temp integer NOT NULL DEFAULT 0,
-  shake integer NOT NULL DEFAULT 0,
+  temp1 integer NOT NULL DEFAULT 0,
+  temp2 integer NOT NULL DEFAULT 0,
+  shake1 numeric(3,1) NOT NULL DEFAULT 0,
+  shake2 numeric(3,1) NOT NULL DEFAULT 0,
   uid integer,
   uptime timestamp without time zone,
   CONSTRAINT "motor-status_pkey" PRIMARY KEY (id),
@@ -205,4 +204,28 @@ WITH (
   OIDS=FALSE
 );
 ALTER TABLE sysconf
+  OWNER TO webuser;
+
+
+-- Table: "motor-daily"
+-- DROP TABLE "motor-daily";
+CREATE TABLE "motor-daily"
+(
+  id serial NOT NULL,
+  did integer NOT NULL,
+  flow integer NOT NULL DEFAULT 0,
+  bdate date NOT NULL,
+  workslot integer NOT NULL DEFAULT 0,
+  explan text NOT NULL,
+  priority integer NOT NULL DEFAULT 0,
+  closed integer NOT NULL DEFAULT 0,
+  uid integer NOT NULL,
+  uptime timestamp without time zone NOT NULL,
+  CONSTRAINT "motor-daily_pkey" PRIMARY KEY (id),
+  CONSTRAINT "motor-daily_did_key" UNIQUE (did)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE "motor-daily"
   OWNER TO webuser;

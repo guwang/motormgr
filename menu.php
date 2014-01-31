@@ -105,6 +105,7 @@
 	</li>
 	<li><a href="#">日常操作</a>
 	  <ul>
+	    <li><a href="daily.php">工作日志</a></li>
 	    <li><a href="weektask.php">日常录入</a></li>
 	    <li><a href="issuetask.php">分发任务</a></li>
 	  </ul>
