@@ -164,14 +164,19 @@ CREATE UNIQUE INDEX uname
   (uname COLLATE pg_catalog."default");
 
 
+
 -- Table: "motor-status"
+
 -- DROP TABLE "motor-status";
+
 CREATE TABLE "motor-status"
 (
   id serial NOT NULL,
   bdate date,
   siteid character varying(50),
   status character varying(1) DEFAULT 0,
+  temp integer NOT NULL DEFAULT 0,
+  shake integer NOT NULL DEFAULT 0,
   uid integer,
   uptime timestamp without time zone,
   CONSTRAINT "motor-status_pkey" PRIMARY KEY (id),

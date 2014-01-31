@@ -56,7 +56,7 @@ if($_SESSION['user']['standing'] == 1){
 
 $sth->execute();
 echo '<table width=100%>';
-echo '<tr><th>序号</th><th>安装位址</th><th>设备位号</th><th>设备名称</th><th>规格型号</th><th>额定功率</th><th>额定电流(A)</th><th>绝缘等级</th><th>防护等级</th><th>防爆等级</th><th>转速(r/min)</th><th>重量(kg)</th><th>安装方式</th><th>前轴承型号</th><th>后轴承型号</th><th>出厂编号</th><th>生产厂家</th><th>装置</th><th>是否加脂</th><th>维护周期</th><th>检修周期</th><th>维护人员</th></tr>';
+echo '<tr><th>序号</th><th>安装位址</th><th>设备位号</th><th>设备名称</th><th>规格型号</th><th>额定功率(KW)</th><th>额定电流(A)</th><th>绝缘等级</th><th>防护等级</th><th>防爆等级</th><th>转速(r/min)</th><th>重量(kg)</th><th>安装方式</th><th>前轴承型号</th><th>后轴承型号</th><th>出厂编号</th><th>生产厂家</th><th>装置</th><th>是否加脂</th><th>维护周期</th><th>检修周期</th><th>维护人员</th></tr>';
 $intId = 1;
 while($row = $sth->fetch())
 {

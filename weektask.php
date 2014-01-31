@@ -111,7 +111,7 @@ if(isset($_POST['btn_week'])){
 echo "<hr>";
 echo "<form name='form1' method='post'>";
 echo "<table>";
-echo "<tr><th>序号</th><th>维护周期</th><th>检修周期</th><th>装置名称</th><th>设备位号</th><th>设备名称</th><th>维护单位</th><th>维护后运行总数</th><th>检修后运行总数</th>";
+echo "<tr><th rowspan=2>序号</th><th rowspan=2>维护周期</th><th rowspan=2>检修周期</th><th rowspan=2>设备位号</th><th rowspan=2>设备名称</th><th rowspan=2>维护单位</th><th rowspan=2 style={width:55px;}>维护后运行总数</th><th rowspan=2 style={width:55px;}>检修后运行总数</th>";
 $per_days = fun_get_per_days($per);
 for($intT=1;$intT<=$sys_view_days;$intT++){
   $date_print = date('Y-m-d',strtotime($date_begin) + $intT*24*60*60);
@@ -120,16 +120,20 @@ for($intT=1;$intT<=$sys_view_days;$intT++){
   $date_print_id = strtotime($date_print);
   if(($diff < $sys_edit_days) & ($diff >= 0)){
     if($date_print == $date){
-      echo '<th style={background:#BF75E3;} ondblclick="fun_setvalue(\''.$date_print_id.'\')">'.$date_print.'</th>';
+      echo '<th colspan=5 style={background:#BF75E3;} ondblclick="fun_setvalue(\''.$date_print_id.'\')">'.$date_print.'</th>';
     }else{
-      echo '<th ondblclick="fun_setvalue(\''.$date_print_id.'\')">'.$date_print.'</th>';
+      echo '<th colspan=5 ondblclick="fun_setvalue(\''.$date_print_id.'\')">'.$date_print.'</th>';
     }
   }else{
-    echo "<th>".$date_print."</th>";
+    echo "<th colspan=5>".$date_print."</th>";
   }
 }
 echo "</tr>";
-//echo "<tr><th>一</th><th>二</th><th>三</th><th>四</th><th>五</th><th>六</th><th>日</th></tr>";
+echo "<tr>";
+for($intT=0;$intT<$sys_view_days;$intT++){
+  echo "<th style={width:30px;}>是否运行</th><th style={width:30px;}>前轴温度</th><th style={width:30px;}>后轴温度</th><th style={width:30px;}>前轴振动</th><th style={width:30px;}>后轴振动</th>";
+}
+echo "</tr>";
 
 $sql = 'select t1."permaintain",t1."percheck",t1."site",t1."siteid",t1."equipname",t1."maintainer",t2.date_w,t3.date_j from "motor-list" t1';
 $sql .= ' left join (select "siteid",max("bdate") as date_w from "public"."motor-status" where "status"=\'W\' group by "siteid") t2 on t1."siteid"=t2."siteid" left join (select "siteid",max("bdate") as date_j from "public"."motor-status" where "status"=\'J\' group by "siteid") t3 on t1."siteid"=t3."siteid"';
@@ -156,7 +160,7 @@ while($row = $sth->fetch()){
   echo "<tr><td align=center>$intId</td>";
   echo "<td align=right>$row[0]</td>";
   echo "<td align=right>$row[1]</td>";
-  echo "<td>$row[2]</td><td>$row[3]</td><td>$row[4]</td><td>$row[5]</td>";
+  echo "<td>$row[3]</td><td>$row[4]</td><td>$row[5]</td>";
   
   //  echo "<br />$siteid: $days_w_set - $days_w";
   if(($days_w_set > 0) & ($days_w == "")){
@@ -187,7 +191,7 @@ while($row = $sth->fetch()){
     $date_print = date('Y-m-d',$date_submit);
     $diff=(strtotime($date)-strtotime($date_print))/86400;
     //    echo $diff."<br />";
-    $sth_getvalue = $dbh->prepare('select "status" from "motor-status" where "siteid"=:s1 and "bdate"=:d1');
+    $sth_getvalue = $dbh->prepare('select "status","temp1","temp2","shake1","shake2" from "motor-status" where "siteid"=:s1 and "bdate"=:d1');
     $sth_getvalue -> bindValue(':s1', $siteid, PDO::PARAM_STR);
     $sth_getvalue -> bindValue(':d1', $date_print, PDO::PARAM_STR);
     $sth_getvalue -> execute();
@@ -199,26 +203,51 @@ while($row = $sth->fetch()){
       $sth_adddefault -> bindValue(':t1', $now, PDO::PARAM_STR);
       $sth_adddefault -> execute();
       $status_getvalue = 0;
+      $temp1_getvalue = 0;
+      $temp2_getvalue = 0;
+      $shake1_getvalue = 0;
+      $shake2_getvalue = 0;
     }else{
       $row_getvalue = $sth_getvalue->fetch();
       $status_getvalue = $row_getvalue[0];
+      $temp_getvalue = $row_getvalue[1];
+      $temp_getvalue = $row_getvalue[2];
+      $shake_getvalue = $row_getvalue[3];
+      $shake_getvalue = $row_getvalue[4];
     }
 
+    /*
+    echo "<br>siteid:".$siteid;
+    echo "<br>sys_edit_days:".$sys_edit_days;
+    echo "<br>diff:".$diff;
+    echo "<br>temp_getvalue:".$temp_getvalue;
+    echo "<br>shake_getvalue:".$shake_getvalue;
+    echo "<hr>";
+    */
+
     if(($diff < $sys_edit_days) & ($diff >= 0)){
-      if($status_getvalue == "0"){
-	echo "<td><input type='text' name='".$date_submit."_".$row[3]."' id='".$date_submit."' maxlength='1' value='".$status_getvalue."' style={width:90px;text-align:center;text-transform:uppercase;color:#FF2608;} /></td>";
-      }else{
-	echo "<td><input type='text' name='".$date_submit."_".$row[3]."' id='".$date_submit."' maxlength='1' value='".$status_getvalue."' style={width:90px;text-align:center;text-transform:uppercase;} /></td>";
-      }
+      echo "<td><input type='text' name='tq".$date_submit."_".$row[3]."' id='tq".$date_submit."' maxlength='3' value='".$temp1_getvalue."' style={width:40px;text-align:center;text-transform:uppercase;color:#FF2608;} /></td>";
+      echo "<td><input type='text' name='th".$date_submit."_".$row[3]."' id='th".$date_submit."' maxlength='3' value='".$temp2_getvalue."' style={width:40px;text-align:center;text-transform:uppercase;color:#FF2608;} /></td>";
+      echo "<td><input type='text' name='sq".$date_submit."_".$row[3]."' id='sq".$date_submit."' maxlength='3' value='".$shake1_getvalue."' style={width:40px;text-align:center;text-transform:uppercase;color:#FF2608;} /></td>";
+      echo "<td><input type='text' name='sh".$date_submit."_".$row[3]."' id='sh".$date_submit."' maxlength='3' value='".$shake2_getvalue."' style={width:40px;text-align:center;text-transform:uppercase;color:#FF2608;} /></td>";
     }else{
-      if($status_getvalue == "0"){
-	echo "<td style={width:90px;text-align:center;color:#FF2608;}>$status_getvalue</td>";
+      if($temp_getvalue == 0){
+	echo "<td style={text-align:center;color:#FF2608;}>$temp1_getvalue</td>";
+	echo "<td style={text-align:center;color:#FF2608;}>$temp2_getvalue</td>";
       }else{
-	echo "<td style={width:90px;text-align:center;}>$status_getvalue</td>";
+	echo "<td style={text-align:center;}>$temp1_getvalue</td>";
+	echo "<td style={text-align:center;}>$temp2_getvalue</td>";
+      }
+      if($shake_getvalue == 0){
+	echo "<td style={text-align:center;color:#FF2608;}>$shake1_getvalue</td>";
+	echo "<td style={text-align:center;color:#FF2608;}>$shake2_getvalue</td>";
+      }else{
+	echo "<td style={text-align:center;}>$shake1_getvalue</td>";
+	echo "<td style={text-align:center;}>$shake2_getvalue</td>";
       }
     }
   }
-  echo "</tr>";
+  echo "</tr>\n";
   $intId++;
 }
 
