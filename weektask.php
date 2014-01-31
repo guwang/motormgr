@@ -86,19 +86,29 @@ $date_begin = date('Y-m-d',strtotime($date) - $sys_view_days*24*60*60);
 
 if(isset($_POST['btn_week'])){
   $now = date('Y-m-d H:i:s',time());
-  //print_r($_POST);
+  //  print_r($_POST);
   foreach($_POST as $key=>$update_value){  
-    //        echo '<br>'.$key.":".$update_value;  
+    //    echo '<br>'.$key.":".$update_value;  
     //    $date_update = substr($key,0,5);
     //    $date_update = strpos($key,'_');
-    if($update_value != "Submit"){
+    if(substr($key,0,2) == "st"){
       $update_value = strtoupper($update_value);
-      $update_date = date('Y-m-d',substr($key,0,strpos($key,'_')));
-      $update_siteid = substr($key,strpos($key,'_')+1,100);
-      //      echo '<br>'.$update_date.' '.$update_siteid.' '.$update_value;
-      $sth = $dbh->prepare('update "motor-status" set "status"=:i1, "uid"=:i2, "uptime"=:s1 where "bdate"=:s2 and "siteid"=:s3');
+      $date_int1 = substr($key,2,1000);
+      $date_int = substr($date_int1,0,strpos($date_int1,'_'));
+      $update_date = date('Y-m-d',$date_int);
+      $update_siteid = substr($key,strpos($key,'_')+1,1000);
+      $update_temp1 = $_POST['tq'.$date_int.'_'.$update_siteid];
+      $update_temp2 = $_POST['th'.$date_int.'_'.$update_siteid];
+      $update_shake1 = $_POST['sq'.$date_int.'_'.$update_siteid];
+      $update_shake2 = $_POST['sh'.$date_int.'_'.$update_siteid];
+      //      echo '<br>'.$update_date.' '.$update_siteid.' '.$update_value.' '.$update_temp1.' '.$update_temp2.' '.$update_shake1.' '.$update_shake2;
+      $sth = $dbh->prepare('update "motor-status" set "status"=:i1, "uid"=:i2, "uptime"=:s1, "temp1"=:i3, "temp2"=:i4, "shake1"=:d1, "shake2"=:d2 where "bdate"=:s2 and "siteid"=:s3');
       $sth->bindValue(':i1', $update_value, PDO::PARAM_INT);
       $sth->bindValue(':i2', $_SESSION['user']['uid'], PDO::PARAM_INT);
+      $sth->bindValue(':i3', $update_temp1, PDO::PARAM_INT);
+      $sth->bindValue(':i4', $update_temp2, PDO::PARAM_INT);
+      $sth->bindValue(':d1', $update_shake1, PDO::PARAM_STR);
+      $sth->bindValue(':d2', $update_shake2, PDO::PARAM_STR);
       $sth->bindValue(':s1', $now, PDO::PARAM_STR);
       $sth->bindValue(':s2', $update_date, PDO::PARAM_STR);
       $sth->bindValue(':s3', $update_siteid, PDO::PARAM_STR);
@@ -111,7 +121,7 @@ if(isset($_POST['btn_week'])){
 echo "<hr>";
 echo "<form name='form1' method='post'>";
 echo "<table>";
-echo "<tr><th rowspan=2>序号</th><th rowspan=2>维护周期</th><th rowspan=2>检修周期</th><th rowspan=2>设备位号</th><th rowspan=2>设备名称</th><th rowspan=2>维护单位</th><th rowspan=2 style={width:55px;}>维护后运行总数</th><th rowspan=2 style={width:55px;}>检修后运行总数</th>";
+echo "<tr><th rowspan=2>序号</th><th rowspan=2 style={width:30px;}>维护周期</th><th rowspan=2 style={width:30px;}>检修周期</th><th rowspan=2>设备位号</th><th rowspan=2>设备名称</th><th rowspan=2>维护单位</th><th rowspan=2 style={width:55px;}>维护后运行总数</th><th rowspan=2 style={width:50px;}>检修后运行总数</th>";
 $per_days = fun_get_per_days($per);
 for($intT=1;$intT<=$sys_view_days;$intT++){
   $date_print = date('Y-m-d',strtotime($date_begin) + $intT*24*60*60);
@@ -135,7 +145,7 @@ for($intT=0;$intT<$sys_view_days;$intT++){
 }
 echo "</tr>";
 
-$sql = 'select t1."permaintain",t1."percheck",t1."site",t1."siteid",t1."equipname",t1."maintainer",t2.date_w,t3.date_j from "motor-list" t1';
+$sql = 'select t1."permaintain",t1."percheck",t1."site",t1."siteid",t1."equipname",t1."maintainer",t2.date_w,t3.date_j,t1."power" from "motor-list" t1';
 $sql .= ' left join (select "siteid",max("bdate") as date_w from "public"."motor-status" where "status"=\'W\' group by "siteid") t2 on t1."siteid"=t2."siteid" left join (select "siteid",max("bdate") as date_j from "public"."motor-status" where "status"=\'J\' group by "siteid") t3 on t1."siteid"=t3."siteid"';
 if($_SESSION['user']['standing'] == 1){
   $sth = $dbh->prepare($sql);
@@ -155,6 +165,7 @@ while($row = $sth->fetch()){
   $siteid = $row[3];
   $date_w = $row[6];
   $date_j = $row[7];
+  $power = $row['power'];
   if($date_w) $days_w = (strtotime($date) - strtotime($date_w)) / 86400; else $days_w = "";
   if($date_j) $days_j = (strtotime($date) - strtotime($date_j)) / 86400; else $days_j = "";
   echo "<tr><td align=center>$intId</td>";
@@ -210,10 +221,10 @@ while($row = $sth->fetch()){
     }else{
       $row_getvalue = $sth_getvalue->fetch();
       $status_getvalue = $row_getvalue[0];
-      $temp_getvalue = $row_getvalue[1];
-      $temp_getvalue = $row_getvalue[2];
-      $shake_getvalue = $row_getvalue[3];
-      $shake_getvalue = $row_getvalue[4];
+      $temp1_getvalue = $row_getvalue[1];
+      $temp2_getvalue = $row_getvalue[2];
+      $shake1_getvalue = $row_getvalue[3];
+      $shake2_getvalue = $row_getvalue[4];
     }
 
     /*
@@ -226,23 +237,70 @@ while($row = $sth->fetch()){
     */
 
     if(($diff < $sys_edit_days) & ($diff >= 0)){
-      echo "<td><input type='text' name='tq".$date_submit."_".$row[3]."' id='tq".$date_submit."' maxlength='3' value='".$temp1_getvalue."' style={width:40px;text-align:center;text-transform:uppercase;color:#FF2608;} /></td>";
-      echo "<td><input type='text' name='th".$date_submit."_".$row[3]."' id='th".$date_submit."' maxlength='3' value='".$temp2_getvalue."' style={width:40px;text-align:center;text-transform:uppercase;color:#FF2608;} /></td>";
-      echo "<td><input type='text' name='sq".$date_submit."_".$row[3]."' id='sq".$date_submit."' maxlength='3' value='".$shake1_getvalue."' style={width:40px;text-align:center;text-transform:uppercase;color:#FF2608;} /></td>";
-      echo "<td><input type='text' name='sh".$date_submit."_".$row[3]."' id='sh".$date_submit."' maxlength='3' value='".$shake2_getvalue."' style={width:40px;text-align:center;text-transform:uppercase;color:#FF2608;} /></td>";
+      echo "<td><input type='text' name='st".$date_submit."_".$row[3]."' id='".$date_submit."' maxlength='1' value='".$status_getvalue."' style={width:30px;text-align:center;text-transform:uppercase;} /></td>";  //运行状态 运行为1 为运行为2 维护为w
+      if($power > 50){
+	if($temp1_getvalue > 75 || ($temp1_getvalue == 0 && $status_getvalue != 0)){
+	  echo "<td><input type='text' name='tq".$date_submit."_".$row[3]."' id='tq".$date_submit."' maxlength='3' value='".$temp1_getvalue."' style={width:30px;text-align:center;text-transform:uppercase;color:#FF2608;} /></td>"; //前轴温度
+	}else{
+	  echo "<td><input type='text' name='tq".$date_submit."_".$row[3]."' id='tq".$date_submit."' maxlength='3' value='".$temp1_getvalue."' style={width:30px;text-align:center;text-transform:uppercase;} /></td>"; //前轴温度
+	}
+	if($temp2_getvalue > 75 || ($temp2_getvalue == 0 && $status_getvalue != 0)){
+	  echo "<td><input type='text' name='th".$date_submit."_".$row[3]."' id='th".$date_submit."' maxlength='3' value='".$temp2_getvalue."' style={width:30px;text-align:center;text-transform:uppercase;color:#FF2608;} /></td>"; //后轴温度
+	}else{
+	  echo "<td><input type='text' name='th".$date_submit."_".$row[3]."' id='th".$date_submit."' maxlength='3' value='".$temp2_getvalue."' style={width:30px;text-align:center;text-transform:uppercase;} /></td>"; //后轴温度
+	}
+	if($shake1_getvalue > 2.8 || ($shake1_getvalue == 0 && $status_getvalue != 0)){
+	  echo "<td><input type='text' name='sq".$date_submit."_".$row[3]."' id='sq".$date_submit."' maxlength='3' value='".$shake1_getvalue."' style={width:30px;text-align:center;text-transform:uppercase;color:#FF2608;} /></td>"; //前轴振动
+	}else{
+	  echo "<td><input type='text' name='sq".$date_submit."_".$row[3]."' id='sq".$date_submit."' maxlength='3' value='".$shake1_getvalue."' style={width:30px;text-align:center;text-transform:uppercase;} /></td>"; //前轴振动
+	}
+	if($shake2_getvalue > 2.8 || ($shake2_getvalue == 0 && $status_getvalue != 0)){
+	  echo "<td><input type='text' name='sh".$date_submit."_".$row[3]."' id='sh".$date_submit."' maxlength='3' value='".$shake2_getvalue."' style={width:30px;text-align:center;text-transform:uppercase;color:#FF2608;} /></td>"; //后轴振动
+	}else{
+	  echo "<td><input type='text' name='sh".$date_submit."_".$row[3]."' id='sh".$date_submit."' maxlength='3' value='".$shake2_getvalue."' style={width:30px;text-align:center;text-transform:uppercase;} /></td>"; //后轴振动
+	}
+      }else{
+	if($temp1_getvalue > 75){
+	  echo "<td><input type='text' name='tq".$date_submit."_".$row[3]."' id='tq".$date_submit."' maxlength='3' value='".$temp1_getvalue."' style={width:30px;text-align:center;text-transform:uppercase;color:#FF2608;} /></td>"; //前轴温度
+	}else{
+	  echo "<td><input type='text' name='tq".$date_submit."_".$row[3]."' id='tq".$date_submit."' maxlength='3' value='".$temp1_getvalue."' style={width:30px;text-align:center;text-transform:uppercase;} /></td>"; //前轴温度
+	}
+	if($temp2_getvalue > 75){
+	  echo "<td><input type='text' name='th".$date_submit."_".$row[3]."' id='th".$date_submit."' maxlength='3' value='".$temp2_getvalue."' style={width:30px;text-align:center;text-transform:uppercase;color:#FF2608;} /></td>"; //后轴温度
+	}else{
+	  echo "<td><input type='text' name='th".$date_submit."_".$row[3]."' id='th".$date_submit."' maxlength='3' value='".$temp2_getvalue."' style={width:30px;text-align:center;text-transform:uppercase;} /></td>"; //后轴温度
+	}
+	if($shake1_getvalue > 2.8){
+	  echo "<td><input type='text' name='sq".$date_submit."_".$row[3]."' id='sq".$date_submit."' maxlength='3' value='".$shake1_getvalue."' style={width:30px;text-align:center;text-transform:uppercase;color:#FF2608;} /></td>"; //前轴振动
+	}else{
+	  echo "<td><input type='text' name='sq".$date_submit."_".$row[3]."' id='sq".$date_submit."' maxlength='3' value='".$shake1_getvalue."' style={width:30px;text-align:center;text-transform:uppercase;} /></td>"; //前轴振动
+	}
+	if($shake2_getvalue > 2.8){
+	  echo "<td><input type='text' name='sh".$date_submit."_".$row[3]."' id='sh".$date_submit."' maxlength='3' value='".$shake2_getvalue."' style={width:30px;text-align:center;text-transform:uppercase;color:#FF2608;} /></td>"; //后轴振动
+	}else{
+	  echo "<td><input type='text' name='sh".$date_submit."_".$row[3]."' id='sh".$date_submit."' maxlength='3' value='".$shake2_getvalue."' style={width:30px;text-align:center;text-transform:uppercase;} /></td>"; //后轴振动
+	}
+      }
     }else{
-      if($temp_getvalue == 0){
+      echo "<td style={text-align:center;}>$status_getvalue</td>";
+      if(($temp1_getvalue == 0 && $power > 50) || $temp1_getvalue > 75){
 	echo "<td style={text-align:center;color:#FF2608;}>$temp1_getvalue</td>";
-	echo "<td style={text-align:center;color:#FF2608;}>$temp2_getvalue</td>";
       }else{
 	echo "<td style={text-align:center;}>$temp1_getvalue</td>";
+      }
+      if(($temp2_getvalue == 0 && $power > 50) || $temp2_getvalue > 75){
+	echo "<td style={text-align:center;color:#FF2608;}>$temp2_getvalue</td>";
+      }else{
 	echo "<td style={text-align:center;}>$temp2_getvalue</td>";
       }
-      if($shake_getvalue == 0){
+      if(($shake1_getvalue == 0 && $power > 50) || $shake1_getvalue > 2.8){
 	echo "<td style={text-align:center;color:#FF2608;}>$shake1_getvalue</td>";
-	echo "<td style={text-align:center;color:#FF2608;}>$shake2_getvalue</td>";
       }else{
 	echo "<td style={text-align:center;}>$shake1_getvalue</td>";
+      }
+      if(($shake2_getvalue == 0 && $power > 50) || $shake2_getvalue > 2.8){
+	echo "<td style={text-align:center;color:#FF2608;}>$shake2_getvalue</td>";
+      }else{
 	echo "<td style={text-align:center;}>$shake2_getvalue</td>";
       }
     }
