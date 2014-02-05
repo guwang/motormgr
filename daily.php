@@ -8,6 +8,42 @@
   <META NAME="Description" CONTENT="">
   <link rel="stylesheet" type="text/css" charset="utf-8" media="all" href="css/style.css" />
   <script src="class/jquery/jquery-1.10.2.min.js"></script>
+  <script language='JavaScript'>
+   function fun_trim(str){
+     if(str == ""){
+       return "";
+     }else{
+       var reg=/^\s*(.*?)\s*$/;
+       return str.replace(reg,"$1");
+     }
+   }
+
+
+   function fun_check_worklog(){
+   //     var require_priori = document.getElementById('txt_priori').value;
+     var radios = document.getElementsByName('txt_priori');
+     //     var radios = document.getElementsByName(radioName);
+     var priori_checked = false;
+     for (var i = 0; i < radios.length; i++){
+       if (radios[i].checked) 
+	 priori_checked = true;
+     }
+     if(priori_checked == false){
+       alert("请选择优先级!");
+       return false;
+     }
+     //     alert(priori_checked);
+
+     var require_worklog = fun_trim(document.getElementById('txt_worklog').value);
+     if(require_worklog == ""){
+       alert("请输入日志内容!");
+       return false;
+     }
+
+
+     return true; 
+   }
+  </script>
   </HEAD>
   <TITLE> 电机台账管理 </TITLE>
  <BODY>
@@ -34,6 +70,11 @@ $db_name = $conf['server'][0]['defaultdb'];
 $db_user = $conf['server'][0]['user'];
 $db_pass = $conf['server'][0]['pass'];
 
+//$time = date('Y-m-d H:i:s',time());
+$time_work = date('H',time());
+
+//echo "时间:$time_work";
+
 echo '<h1>工作日志</h1>';
 //echo '电机运行信息';
 
@@ -45,31 +86,107 @@ $dbh = new PDO("$db_type:host=$db_host;port=$db_port;dbname=$db_name;user=$db_us
 $dbh -> setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 
 
+if(isset($_GET['flowid'])) $get_flowid = $_GET['flowid']; else $get_flowid = "";
+
+
+if(isset($_POST['submit'])){
+  $insert_date = date('Y-m-d',time());
+  $insert_time = date('Y-m-d H:i:s',time());
+  $post_flowid = $_POST['txt_flowid'];
+  $post_workslot = $_POST['txt_workslot'];
+  $post_priori = $_POST['txt_priori'];
+  if(isset($_POST['txt_close'])) $post_close = $_POST['txt_close']; else $post_close = "";
+  $post_worklog = $_POST['txt_worklog'];
+  if($post_flowid == "") $insert_flowid = 0; else $insert_flowid = $post_flowid;
+  if($post_workslot == "day") $insert_workslot = 1; else $insert_workslot = 2;
+  $insert_priori = substr($post_priori,1,1);
+  if($post_close == "") $insert_close = 0; else $insert_close = 1;
+  $insert_worklog = trim($post_worklog);
+
+  $sql = 'select max("did")+1 as newid from "motor-daily"';
+  $rst = $dbh -> query($sql);
+  $row = $rst -> fetch();
+  $did_new = $row[0];
+  if(!$did_new) $did_new = 1;
+
+  $sql = 'insert into "motor-daily"("did","flow","bdate","workslot","explan","priority","closed","uid","uptime") values(:i1,:i2,:s1,:i3,:s2,:i4,:i5,:i6,:s3)';
+  $sth = $dbh->prepare($sql);
+  $sth->bindValue(':i1', $did_new, PDO::PARAM_INT);
+  $sth->bindValue(':i2', $insert_flowid, PDO::PARAM_INT);
+  $sth->bindValue(':s1', $insert_date, PDO::PARAM_STR);
+  $sth->bindValue(':i3', $insert_workslot, PDO::PARAM_INT);
+  $sth->bindValue(':s2', $insert_worklog, PDO::PARAM_STR);
+  $sth->bindValue(':i4', $insert_priori, PDO::PARAM_INT);
+  $sth->bindValue(':i5', $insert_close, PDO::PARAM_INT);
+  $sth->bindValue(':i6', $_SESSION['user']['uid'], PDO::PARAM_INT);
+  $sth->bindValue(':s3', $insert_time, PDO::PARAM_INT);
+  $sth->execute();
+}
+
+
+
 if($_SESSION['user']['standing'] == 1){
-  $sql = 'select "id","did","flow","bdate","workslot","explan","priority","closed","uid","uptime" from "motor-daily"';
+  $sql = 'select "id","did","flow","bdate","workslot","explan","priority","closed","uid","uptime" from "motor-daily" order by "bdate","did"';
   $sth = $dbh->prepare($sql);
 }else{
-  $sql = 'select "id","did","flow","bdate","workslot","explan","priority","closed","uid","uptime" from "motor-daily" where "uid"=:i1';
+  $sql = 'select "id","did","flow","bdate","workslot","explan","priority","closed","uid","uptime" from "motor-daily" where "uid"=:i1 order by "bdate","did"';
   $sth = $dbh->prepare($sql);
   $sth->bindValue(':i1', $_SESSION['user']['uid'], PDO::PARAM_INT);
 }
-
 $sth->execute();
 echo '<table>';
-echo '<tr><th>ID</th><th>Flow ID</th><th>日期</th><th>班次</th><th>记录</th><th>优先级</th><th>是否关闭</th><th>录入</th><th>时间</th></tr>';
+echo '<tr><th style={width:80;}>日期</th><th>ID</th><th>Flow ID</th><th>班次</th><th style={width:700;}>记录</th><th>优先级</th><th>关闭</th><th>录入</th><th>时间</th><th>Action</th></tr>';
 while($row = $sth->fetch())
 {
-  echo "<tr><td align=center>$row[1]</td><td>$row[2]</td><td>$row[3]</td>";
+  $priori = $row['priority'];
+  if($priori == 1){
+    echo "<tr style={background-color:$alert_color2;}>";
+  }else if($priori == 2){
+    echo "<tr style={background-color:$alert_color1;}>";
+  }
+  echo "<td>$row[3]</td><td align=center>$row[1]</td><td align=center>$row[2]</td>";
   if($row[4] == 1){
     echo "<td align=center>白</td>";
   }else{
-    echo "<td align=center>黑</td>";
+    echo "<td align=center>夜</td>";
   }
-  echo "<td align=right>$row[5]</td><td align=right>$row[6]</td><td align=center>$row[7]</td><td align=center>$row[8]</td><td>$row[9]</td>";
+  echo "<td style={width:700;}>$row[5]</td><td align=center>$row[6]</td><td align=center>$row[7]</td><td align=center>$row[8]</td><td>$row[9]</td>";
+  echo "<td align=center><a href='?flowid=".$row[1]."'>Flow</a></td>";
   echo "</tr>";
 }
 echo '</table>';
 
+
+echo "<hr />";
+echo "<div style={width:700px;height:200px}>";
+echo "<h3>录入日志:</h3><br />";
+echo '<form name="frm_worklog" id="frm_worklog" enctype="multipart/form-data" method="post" onsubmit="return fun_check_worklog();">';
+echo "Flow ID:<b>$get_flowid</b>";
+echo "<input name='txt_flowid' type=hidden value='$get_flowid'>";
+echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+echo "班次:";
+if($time_work >= 8 && $time_work < 17){
+  echo "<label><input type='radio' name='txt_workslot' value='day' style='border:none;' checked>白班</label>";
+  echo "<label><input type='radio' name='txt_workslot' value='night' style='border:none;'>夜班</label>";
+}else{
+  echo "<label><input type='radio' name='txt_workslot' value='day' style='border:none;'>白班</label>";
+  echo "<label><input type='radio' name='txt_workslot' value='night' style='border:none;' checked>夜班</label>";
+}
+echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+
+echo "优先级:";
+echo "<label><input type='radio' id='txt_priori' name='txt_priori' value='p0' style='border:none;'>记录</label>";
+echo "<label><input type='radio' id='txt_priori' name='txt_priori' value='p1' style='border:none;'>提示</label>";
+echo "<label><input type='radio' id='txt_priori' name='txt_priori' value='p2' style='border:none;'>警告</label>";
+
+echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+if($get_flowid) echo "<label>关闭<input name='txt_close' type='checkbox' value='yes'></label>";
+
+echo "<textarea id='txt_worklog' name='txt_worklog' type=textarea style='width:700px;height:100px;'></textarea><br />";
+echo '<input type=submit class=btn name=submit value="确&nbsp;&nbsp;&nbsp;定" style="width:80px;">';
+echo '</form>';
+
+echo "</div>";
 
 
 /*

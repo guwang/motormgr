@@ -22,9 +22,13 @@ $db_name = $conf['server'][0]['defaultdb'];
 $db_user = $conf['server'][0]['user'];
 $db_pass = $conf['server'][0]['pass'];
 
-$name = $_POST['user'];
-$pass = $_POST['pass'];
-
+if(isset($_POST['submit'])){
+    $name = $_POST['user'];
+    $pass = $_POST['pass'];
+}else{
+    $name = "";
+    $pass = "";
+}
 
 
 echo "<center><h2>电机运行管理系统</h2></center>";
@@ -37,12 +41,12 @@ echo '<tr><td class=grid align=right>Passowrd:</td>
           <td class=grid><input name=pass type=password style="width:150px;" class=text></td>
           <td class=grid></td></tr>';
 echo '<tr><td class=grid></td>
-          <td class=grid align=right><input type=submit class=btn value="确&nbsp;&nbsp;&nbsp;定" style="width:80px;"></td>
+          <td class=grid align=right><input type=submit class=btn name=submit value="确&nbsp;&nbsp;&nbsp;定" style="width:80px;"></td>
           <td class=grid></td></tr>';
 echo '</table>';
 echo '</form>';
 
-if($name & $pass){
+if(isset($_POST['submit']) && $name && $pass){
   $dbh = new PDO("$db_type:host=$db_host;port=$db_port;dbname=$db_name;user=$db_user;password=$db_pass");
   //$dbh = new PDO("$db_type:host=$db_host;port=$db_port;dbname=$db_name;user=$db_user");
   //$dbh -> query("SET NAMES UTF8");
