@@ -56,11 +56,11 @@ $dbh = new PDO("$db_type:host=$db_host;port=$db_port;dbname=$db_name;user=$db_us
 //$dbh -> query("SET NAMES UTF8");
 $dbh -> setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 
-$sth = $dbh->prepare('select "sysvalue" from "sysconf" where "sysname"=\'view_days\'');
+$sth = $dbh->prepare('select "authtype" from "sysdataauth" where "uid"='.$_SESSION['user']['uid'].' and "authsort"=\'view_days\'');
 $sth->execute();
 $row = $sth->fetch();
 $sys_view_days = $row[0];
-$sth = $dbh->prepare('select "sysvalue" from "sysconf" where "sysname"=\'edit_days\'');
+$sth = $dbh->prepare('select "authtype" from "sysdataauth" where "uid"='.$_SESSION['user']['uid'].' and "authsort"=\'edit_days\'');
 $sth->execute();
 $row = $sth->fetch();
 $sys_edit_days = $row[0];

@@ -86,7 +86,15 @@ $dbh = new PDO("$db_type:host=$db_host;port=$db_port;dbname=$db_name;user=$db_us
 $dbh -> setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 
 
+$sth = $dbh->prepare('select "authtype" from "sysdataauth" where "uid"='.$_SESSION['user']['uid'].' and "authsort"=\'view_log_days\'');
+$sth->execute();
+$row = $sth->fetch();
+$sys_view_log_days = $row[0];
+
 if(isset($_GET['flowid'])) $get_flowid = $_GET['flowid']; else $get_flowid = "";
+
+$date_now = date('Y-m-d',time());
+$date_begin = date('Y-m-d',strtotime($date_now) - $sys_view_log_days*24*60*60);
 
 
 if(isset($_POST['submit'])){
@@ -126,10 +134,10 @@ if(isset($_POST['submit'])){
 
 
 if($_SESSION['user']['standing'] == 1){
-  $sql = 'select "id","did","flow","bdate","workslot","explan","priority","closed","uid","uptime" from "motor-daily" order by "bdate","did"';
+  $sql = 'select t1."id",t1."did",t1."flow",t1."bdate",t1."workslot",t1."explan",t1."priority",t1."closed",t2."uname",t1."uptime" from "motor-daily" t1 inner join "sysuser" t2 on t1."uid"=t2."uid" where ("bdate">\''.$date_begin.'\' or ("priority">0 and "closed"=0)) order by "bdate","did"';
   $sth = $dbh->prepare($sql);
 }else{
-  $sql = 'select "id","did","flow","bdate","workslot","explan","priority","closed","uid","uptime" from "motor-daily" where "uid"=:i1 order by "bdate","did"';
+  $sql = 'select t1."id",t1."did",t1."flow",t1."bdate",t1."workslot",t1."explan",t1."priority",t1."closed",t2."uname",t1."uptime" from "motor-daily" t1 inner join "sysuser" t2 on t1."uid"=t2."uid" where ("bdate">\''.$date_begin.'\' or ("priority">0 and "closed"=0)) and t1."uid"=:i1 order by "bdate","did"';
   $sth = $dbh->prepare($sql);
   $sth->bindValue(':i1', $_SESSION['user']['uid'], PDO::PARAM_INT);
 }
