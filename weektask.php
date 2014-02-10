@@ -250,7 +250,7 @@ while($row = $sth->fetch()){
 
     if(($diff < $sys_edit_days) & ($diff >= 0)){
       echo "<td><input type='text' name='st".$date_submit."_".$row[3]."' id='".$date_submit."' maxlength='1' value='".$status_getvalue."' style={width:30px;text-align:center;text-transform:uppercase;} /></td>";  //运行状态 运行为1 为运行为2 维护为w
-      if($power > 50){
+      if($power > 160){
 	if($temp1_getvalue > 75 || ($temp1_getvalue == 0 && $status_getvalue != 0)){
 	  echo "<td><input type='text' name='tq".$date_submit."_".$row[3]."' id='tq".$date_submit."' maxlength='3' value='".$temp1_getvalue."' style={width:30px;text-align:center;text-transform:uppercase;color:#FF2608;} /></td>"; //前轴温度
 	}else{
