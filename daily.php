@@ -143,14 +143,14 @@ if($_SESSION['user']['standing'] == 1){
 }
 $sth->execute();
 echo '<table>';
-echo '<tr><th style={width:80;}>日期</th><th>ID</th><th>Flow ID</th><th>班次</th><th style={width:700;}>记录</th><th>优先级</th><th>关闭</th><th>录入</th><th>时间</th><th>Action</th></tr>';
+echo '<tr><th style="width:80;">日期</th><th>ID</th><th>Flow ID</th><th>班次</th><th style="width:700;">记录</th><th>优先级</th><th>关闭</th><th>录入</th><th>时间</th><th>Action</th></tr>';
 while($row = $sth->fetch())
 {
   $priori = $row['priority'];
   if($priori == 1){
-    echo "<tr style={background-color:$alert_color2;}>";
+    echo "<tr style='background-color:$alert_color2;'>";
   }else if($priori == 2){
-    echo "<tr style={background-color:$alert_color1;}>";
+    echo "<tr style='background-color:$alert_color1;'>";
   }
   echo "<td>$row[3]</td><td align=center>$row[1]</td><td align=center>$row[2]</td>";
   if($row[4] == 1){
@@ -158,7 +158,7 @@ while($row = $sth->fetch())
   }else{
     echo "<td align=center>夜</td>";
   }
-  echo "<td style={width:700;}>$row[5]</td><td align=center>$row[6]</td><td align=center>$row[7]</td><td align=center>$row[8]</td><td>$row[9]</td>";
+  echo "<td style='width:700;'>$row[5]</td><td align=center>$row[6]</td><td align=center>$row[7]</td><td align=center>$row[8]</td><td>$row[9]</td>";
   echo "<td align=center><a href='?flowid=".$row[1]."'>Flow</a></td>";
   echo "</tr>";
 }
@@ -166,7 +166,7 @@ echo '</table>';
 
 
 echo "<hr />";
-echo "<div style={width:700px;height:200px}>";
+echo "<div style='width:700px;height:200px'>";
 echo "<h3>录入日志:</h3><br />";
 echo '<form name="frm_worklog" id="frm_worklog" enctype="multipart/form-data" method="post" onsubmit="return fun_check_worklog();">';
 echo "Flow ID:<b>$get_flowid</b>";
