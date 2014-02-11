@@ -64,7 +64,7 @@
       position:absolute; 
       left:0; 
       display:none; /* Hide it by default */
-      margin:0 0 0 -1px; 
+      margin:0 0 0 0; 
       padding:0; 
       list-style:none;
       border-bottom:3px solid #F2861D;
@@ -85,16 +85,17 @@
       text-decoration:none;	
       border-top:none;
       border-bottom:1px dashed #6B6B6B;
-      margin:-3; 
+      margin:0; 
       }
       
       .navigation  ul a:hover {
       color:#F2861D;
       }
+      .cl1 { clear: both; font-size:1px; visibility: hidden; }
     </style>
   </head>
   <body>
-    <div style="width:650px; margin:0 auto">
+    <div style="width:650px; margin:0 auto; float:left;">
       <ul class="navigation">
 	<li><a href="#">电机状态</a>
 	  <ul>
@@ -131,5 +132,7 @@
       <div class="clear"></div>
 
     </div>
+   <div class="cl1"></div>
+
   </body>
 </html>

@@ -4,8 +4,8 @@ iterations of my website http://repose.cx/. help yourself to bits you like. */
 body {
     font-family: Verdana, Tahoma, Arial, sans-serif, 微软雅黑;
     font-size: 12px;
-   /*background: #bbccdd; */
-   background: #B0E3BD;
+   /*background-color: #bbccdd; */
+   background-color: #B0E3BD;
   /*font: 100%;*/
 /*  padding-left: 1%;  */
    padding-left: 5px;
@@ -85,7 +85,7 @@ a {
 }
 
 a:hover {
-  background: blue;
+  background-color: blue;
   color: yellow;
 }
 
@@ -106,9 +106,9 @@ h1 {
   font-size: 20px;
   text-align: center;
   color: navy;
-  /* background: white url(images/glossy-back2.gif) repeat-x bottom left; */
-  /* background: #efefbb; */
-  background: #ffffd6;
+  /* background-color: white url(images/glossy-back2.gif) repeat-x bottom left; */
+  /* background-color: #efefbb; */
+  background-color: #ffffd6;
   border-top: ButtonHighlight 1px solid;
   border-bottom: ButtonShadow 1px solid;
   border-left: ButtonHighlight 1px solid;
@@ -125,8 +125,8 @@ h2 {
   font-family: Verdana, Tahoma, Arial, sans-serif, 微软雅黑;
   font-size: 20px;
   color: #111;
-  /* background: white url(images/glossy-back1.gif) repeat-x bottom left; */
-  background: #bbccdd;
+  /* background-color: white url(images/glossy-back1.gif) repeat-x bottom left; */
+  background-color: #bbccdd;
   border-top: 1px solid royalblue;
   /* border-bottom: 1px solid royalblue;
   border-left: 8px solid royalblue;
@@ -157,7 +157,7 @@ h4 {
   font-family: Verdana, Tahoma, Arial, sans-serif, 微软雅黑;
   font-size: 16px;
   color: #333;
-  background: url(images/dot.gif) no-repeat 2px center;
+  background-color: url(images/dot.gif) no-repeat 2px center;
   padding: 2px;
   padding-left: 20px;
   /* border-top: 1px solid royalblue; */
@@ -167,7 +167,7 @@ h4 {
 }
 
 img {
-  background: white;
+  background-color: white;
   float: none;
   margin-bottom: -5px;
   border-style: solid;
@@ -231,7 +231,7 @@ th {
   padding-left: 3px;
   padding-right: 2px;
   overflow: hidden;
-  background: #ffffbb;
+  background-color: #ffffbb;
   border: 1px solid black;
 /*  pacing: 0;
   padding: 0;*/
@@ -259,7 +259,7 @@ td {
   padding-right: 2px;
   overflow: hidden;
   border: 1px solid black;
-/*  background: #ddeecc;*/
+/*  background-color: #ddeecc;*/
 
   pacing: 0;
  /* padding: 0;*/

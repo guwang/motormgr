@@ -77,7 +77,7 @@ $sql = 'select t1."sysname",t1."sysvalue",t2."uname",t1."uptime" "regtime" from 
 $sth = $dbh->prepare($sql);
 //$sth->bindValue(':sn', '141P204B', PDO::PARAM_STR);
 $sth->execute();
-echo "<br /><br />";
+
 echo '<table>';
 echo '<tr><th>参数名</th><th>设置值</th><th>用户</th><th>更新时间</th></tr>';
 $intId = 1;
@@ -85,7 +85,7 @@ echo "<form name='form1' method='post'>";
 while($row = $sth->fetch())
 {
   echo "<tr><td>$row[0]</td><td>";
-  echo "<input type='text' name='".$row[0]."' id='".$row[0]."' maxlength='2' value='".$row[1]."' style={width:90px;text-align:center;} />";
+  echo "<input type='text' name='".$row[0]."' id='".$row[0]."' maxlength='2' value='".$row[1]."' style='width:90px;text-align:center;' />";
   echo "</td><td>$row[2]</td><td>$row[3]</td>";
   echo "</tr>";
   $intId++;

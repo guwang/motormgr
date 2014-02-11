@@ -102,22 +102,22 @@ while($row = $sth->fetch()){
   echo "<td align=right>$row[4]</td><td align=right>$row[5]</td><td>$row[6]</td>";
   echo "<td>$date_w</td><td align=center>$days_w</td><td>$date_w_next</td>";
   if(($days_w_set > 0) & ($days_w == "")){
-    echo "<td align=center style={background-color:$alert_color1;}>$days_w_next</td>";
+    echo "<td align=center style='background-color:$alert_color1;'>$days_w_next</td>";
   }else if(($days_w_set > 0) & ($days_w_set - $days_w < 0)){
-    echo "<td align=center style={background-color:$alert_color1;}>$days_w_next</td>";
+    echo "<td align=center style='background-color:$alert_color1;'>$days_w_next</td>";
   }else if(($days_w_set > 0) & ($days_w_set - $days_w < 5)){
-    echo "<td align=center style={background-color:$alert_color2;}>$days_w_next</td>";
+    echo "<td align=center style='background-color:$alert_color2;'>$days_w_next</td>";
   }else{
     echo "<td align=center>$days_w_next</td>";
   }
   echo "<td>$date_j</td><td align=center>$days_j</td>";
   echo "<td>$date_j_next</td>";
   if(($days_j_set > 0) & ($days_j == "")){
-    echo "<td align=center style={background-color:$alert_color1;}>$days_j_next</td></tr>";
+    echo "<td align=center style='background-color:$alert_color1;'>$days_j_next</td></tr>";
   }else if(($days_j_set > 0) & ($days_j_set - $days_j < 0)){
-    echo "<td align=center style={background-color:$alert_color1;}>$days_j_next</td></tr>";
+    echo "<td align=center style='background-color:$alert_color1;'>$days_j_next</td></tr>";
   }else if(($days_j_set > 0) & ($days_j_set - $days_j < 30)){
-    echo "<td align=center style={background-color:$alert_color2;}>$days_j_next</td></tr>";
+    echo "<td align=center style='background-color:$alert_color2;'>$days_j_next</td></tr>";
   }else{
     echo "<td align=center>$days_j_next</td></tr>";
   }

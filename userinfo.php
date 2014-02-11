@@ -52,7 +52,7 @@ $sql = 'select "uid","uname","cname","branch","dep","tel","mb","email","regtime"
 $sth = $dbh->prepare($sql);
 //$sth->bindValue(':sn', '141P204B', PDO::PARAM_STR);
 $sth->execute();
-echo "<br /><br />";
+
 echo '<table>';
 echo '<tr><th>UID</th><th>用户名</th><th>姓名</th><th>站点</th><th>部门</th><th>电话</th><th>手机</th><th>邮箱</th><th>注册时间</th></tr>';
 $intId = 1;
