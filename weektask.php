@@ -47,7 +47,6 @@ $db_user = $conf['server'][0]['user'];
 $db_pass = $conf['server'][0]['pass'];
 
 echo '<h1>本周任务</h1>';
-//echo '电机运行信息';
 
 include_once("menu.php");
 
@@ -83,10 +82,13 @@ $date_begin = date('Y-m-d',strtotime($date) - $sys_view_days*24*60*60);
 //echo "date_begin:".$date_begin;
 
 
+//  echo "<pre>";
+//  print_r($_POST);
+//  echo "</pre>";
+
 
 if(isset($_POST['btn_week'])){
   $now = date('Y-m-d H:i:s',time());
-  //  print_r($_POST);
   foreach($_POST as $key=>$update_value){  
     //    echo '<br>'.$key.":".$update_value;  
     //    $date_update = substr($key,0,5);
@@ -141,7 +143,7 @@ for($intT=1;$intT<=$sys_view_days;$intT++){
 echo "</tr>";
 echo "<tr>";
 for($intT=0;$intT<$sys_view_days;$intT++){
-  echo "<th style='width:30px;'>是否运行</th><th style='width:30px;'>前轴温度</th><th style='width:30px;'>后轴温度</th><th style='width:30px;'>前轴振动</th><th style='width:30px;'>后轴振动</th>";
+  echo "<th style='width:30px;'>是否运行</th><th style='width:30px;'>前轴温度</th><th style='width:30px;'>后轴温度</th><th style='width:30px;'>上下振动</th><th style='width:30px;'>水平振动</th>";
 }
 echo "</tr>";
 
