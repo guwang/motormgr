@@ -46,7 +46,7 @@ $db_name = $conf['server'][0]['defaultdb'];
 $db_user = $conf['server'][0]['user'];
 $db_pass = $conf['server'][0]['pass'];
 
-echo '<h1>本周任务</h1>';
+echo '<h1>本周任务A</h1>';
 
 include_once("menu.php");
 
