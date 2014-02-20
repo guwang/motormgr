@@ -123,7 +123,7 @@ if(isset($_POST['btn_week'])){
 echo "<hr>";
 echo "<form name='form1' method='post'>";
 echo "<table>";
-echo "<tr><th rowspan=2>序号</th><th rowspan=2 style='width:30px;'>维护周期</th><th rowspan=2 style='width:30px;'>检修周期</th><th rowspan=2>设备位号</th><th rowspan=2>设备名称</th><th rowspan=2>电流</th><th rowspan=2>维护单位</th><th rowspan=2 style='width:55px;'>维护后运行总数</th><th rowspan=2 style='width:50px;'>检修后运行总数</th>";
+echo "<tr><th rowspan=2>序号</th><th rowspan=2 style='width:30px;'>维护周期</th><th rowspan=2 style='width:30px;'>检修周期</th><th rowspan=2>设备位号</th><th rowspan=2>设备名称</th><th rowspan=2>额定电流</th><th rowspan=2>维护单位</th><th rowspan=2 style='width:55px;'>维护后运行总数</th><th rowspan=2 style='width:50px;'>检修后运行总数</th>";
 $per_days = fun_get_per_days($per);
 for($intT=1;$intT<=$sys_view_days;$intT++){
   $date_print = date('Y-m-d',strtotime($date_begin) + $intT*24*60*60);
@@ -147,7 +147,7 @@ for($intT=0;$intT<$sys_view_days;$intT++){
 }
 echo "</tr>";
 
-$sql = 'select t1."permaintain",t1."percheck",t1."site",t1."siteid",t1."equipname",t1."maintainer",t2.date_w,t3.date_j,t1."power" from "motor-list" t1';
+$sql = 'select t1."permaintain",t1."percheck",t1."site",t1."siteid",t1."equipname",t1."maintainer",t2.date_w,t3.date_j,t1."power",t1."voltage" from "motor-list" t1';
 $sql .= ' left join (select "siteid",max("bdate") as date_w from "public"."motor-status" where "status"=\'W\' group by "siteid") t2 on t1."siteid"=t2."siteid" left join (select "siteid",max("bdate") as date_j from "public"."motor-status" where "status"=\'J\' group by "siteid") t3 on t1."siteid"=t3."siteid"';
 if($_SESSION['user']['standing'] == 1){
   $sth = $dbh->prepare($sql);
@@ -173,7 +173,7 @@ while($row = $sth->fetch()){
   echo "<tr><td align=center>$intId</td>";
   echo "<td align=right>$row[0]</td>";
   echo "<td align=right>$row[1]</td>";
-  echo "<td>$row[3]</td><td>$row[4]</td><td>$row[5]</td>";
+  echo "<td>$row[3]</td><td>$row[4]</td><td>$row[9]</td><td>$row[5]</td>";
   
   //  echo "<br />$siteid: $days_w_set - $days_w";
   if(($days_w_set > 0) && ($days_w == 0) && ($date_w != $date)){
