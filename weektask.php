@@ -123,7 +123,7 @@ if(isset($_POST['btn_week'])){
 echo "<hr>";
 echo "<form name='form1' method='post'>";
 echo "<table>";
-echo "<tr><th rowspan=2>序号</th><th rowspan=2 style='width:30px;'>维护周期</th><th rowspan=2 style='width:30px;'>检修周期</th><th rowspan=2>设备位号</th><th rowspan=2>设备名称</th><th rowspan=2>维护单位</th><th rowspan=2 style='width:55px;'>维护后运行总数</th><th rowspan=2 style='width:50px;'>检修后运行总数</th>";
+echo "<tr><th rowspan=2>序号</th><th rowspan=2 style='width:30px;'>维护周期</th><th rowspan=2 style='width:30px;'>检修周期</th><th rowspan=2>设备位号</th><th rowspan=2>设备名称</th><th rowspan=2>电流</th><th rowspan=2>维护单位</th><th rowspan=2 style='width:55px;'>维护后运行总数</th><th rowspan=2 style='width:50px;'>检修后运行总数</th>";
 $per_days = fun_get_per_days($per);
 for($intT=1;$intT<=$sys_view_days;$intT++){
   $date_print = date('Y-m-d',strtotime($date_begin) + $intT*24*60*60);
