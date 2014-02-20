@@ -143,7 +143,7 @@ for($intT=1;$intT<=$sys_view_days;$intT++){
 echo "</tr>";
 echo "<tr>";
 for($intT=0;$intT<$sys_view_days;$intT++){
-  echo "<th style='width:30px;'>是否运行</th><th style='width:30px;'>前轴温度</th><th style='width:30px;'>后轴温度</th><th style='width:30px;'>上下振动</th><th style='width:30px;'>水平振动</th>";
+  echo "<th style='width:30px;'>是否运行</th><th style='width:30px;'>前轴温度</th><th style='width:30px;'>后轴温度</th><th style='width:30px;'>上下振动</th><th style='width:30px;'>水平振动</th><th style='width:30px;'>电流</th>";
 }
 echo "</tr>";
 
@@ -173,7 +173,7 @@ while($row = $sth->fetch()){
   echo "<tr><td align=center>$intId</td>";
   echo "<td align=right>$row[0]</td>";
   echo "<td align=right>$row[1]</td>";
-  echo "<td>$row[3]</td><td>$row[4]</td><td>$row[9]</td><td>$row[5]</td>";
+  echo "<td>$row[3]</td><td>$row[4]</td><td align='right'>$row[9]</td><td>$row[5]</td>";
   
   //  echo "<br />$siteid: $days_w_set - $days_w";
   if(($days_w_set > 0) && ($days_w == 0) && ($date_w != $date)){
@@ -204,7 +204,7 @@ while($row = $sth->fetch()){
     $date_print = date('Y-m-d',$date_submit);
     $diff=(strtotime($date)-strtotime($date_print))/86400;
     //    echo $diff."<br />";
-    $sth_getvalue = $dbh->prepare('select "status","temp1","temp2","shake1","shake2" from "motor-status" where "siteid"=:s1 and "bdate"=:d1');
+    $sth_getvalue = $dbh->prepare('select "status","temp1","temp2","shake1","shake2","voltage" from "motor-status" where "siteid"=:s1 and "bdate"=:d1');
     $sth_getvalue -> bindValue(':s1', $siteid, PDO::PARAM_STR);
     $sth_getvalue -> bindValue(':d1', $date_print, PDO::PARAM_STR);
     $sth_getvalue -> execute();
@@ -232,6 +232,7 @@ while($row = $sth->fetch()){
       $temp2_getvalue = 0;
       $shake1_getvalue = 0;
       $shake2_getvalue = 0;
+      $voltage_getvalue = 0;
     }else{
       $row_getvalue = $sth_getvalue->fetch();
       $status_getvalue = $row_getvalue[0];
@@ -239,6 +240,7 @@ while($row = $sth->fetch()){
       $temp2_getvalue = $row_getvalue[2];
       $shake1_getvalue = $row_getvalue[3];
       $shake2_getvalue = $row_getvalue[4];
+      $voltage_getvalue = $row_getvalue[5];
     }
 
     /*
@@ -297,25 +299,30 @@ while($row = $sth->fetch()){
       }
     }else{
       echo "<td style='text-align:center;'>$status_getvalue</td>";
-      if(($temp1_getvalue == 0 && $power > 50 && $status_getvalue != "0") || $temp1_getvalue > 75){
+      if(($temp1_getvalue == 0 && $power > 160 && $status_getvalue != "0") || $temp1_getvalue > 75){
 	echo "<td style='text-align:center;color:#FF2608;'>$temp1_getvalue</td>";
       }else{
 	echo "<td style='text-align:center;'>$temp1_getvalue</td>";
       }
-      if(($temp2_getvalue == 0 && $power > 50 && $status_getvalue != "0") || $temp2_getvalue > 75){
+      if(($temp2_getvalue == 0 && $power > 160 && $status_getvalue != "0") || $temp2_getvalue > 75){
 	echo "<td style='text-align:center;color:#FF2608;'>$temp2_getvalue</td>";
       }else{
 	echo "<td style='text-align:center;'>$temp2_getvalue</td>";
       }
-      if(($shake1_getvalue == 0 && $power > 50 && $status_getvalue != "0") || $shake1_getvalue > 2.8){
+      if(($shake1_getvalue == 0 && $power > 160 && $status_getvalue != "0") || $shake1_getvalue > 2.8){
 	echo "<td style='text-align:center;color:#FF2608;'>$shake1_getvalue</td>";
       }else{
 	echo "<td style='text-align:center;'>$shake1_getvalue</td>";
       }
-      if(($shake2_getvalue == 0 && $power > 50 && $status_getvalue != "0") || $shake2_getvalue > 2.8){
+      if(($shake2_getvalue == 0 && $power > 160 && $status_getvalue != "0") || $shake2_getvalue > 2.8){
 	echo "<td style='text-align:center;color:#FF2608;'>$shake2_getvalue</td>";
       }else{
 	echo "<td style='text-align:center;'>$shake2_getvalue</td>";
+      }
+      if(($voltage_getvalue == 0 && $power > 160 && $status_getvalue != "0") || $voltage_getvalue > 5){
+	echo "<td style='text-align:center;color:#FF2608;'>$voltage_getvalue</td>";
+      }else{
+	echo "<td style='text-align:center;'>$voltage_getvalue</td>";
       }
     }
   }
