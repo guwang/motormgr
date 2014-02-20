@@ -137,7 +137,7 @@ for($intT=1;$intT<=$sys_view_days;$intT++){
       echo '<th colspan=6 ondblclick="fun_setvalue(\''.$date_print_id.'\')">'.$date_print.'</th>';
     }
   }else{
-    echo "<th colspan=5>".$date_print."</th>";
+    echo "<th colspan=6>".$date_print."</th>";
   }
 }
 echo "</tr>";
