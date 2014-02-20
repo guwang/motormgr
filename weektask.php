@@ -132,9 +132,9 @@ for($intT=1;$intT<=$sys_view_days;$intT++){
   $date_print_id = strtotime($date_print);
   if(($diff < $sys_edit_days) & ($diff >= 0)){
     if($date_print == $date){
-      echo '<th colspan=5 style="background-color:#BF75E3;" ondblclick="fun_setvalue(\''.$date_print_id.'\')">'.$date_print.'</th>';
+      echo '<th colspan=6 style="background-color:#BF75E3;" ondblclick="fun_setvalue(\''.$date_print_id.'\')">'.$date_print.'</th>';
     }else{
-      echo '<th colspan=5 ondblclick="fun_setvalue(\''.$date_print_id.'\')">'.$date_print.'</th>';
+      echo '<th colspan=6 ondblclick="fun_setvalue(\''.$date_print_id.'\')">'.$date_print.'</th>';
     }
   }else{
     echo "<th colspan=5>".$date_print."</th>";
