@@ -268,13 +268,13 @@ td {
 }
 
 .div-daily { width:700px; background-color:red; }
-.div-id { width:30px; }
-.div-date { width:80px; }
-.div-flowid { width:60px; }
-.div-workslot { width:30px; }
-.div-explan { width:300px; }
-.div-priority { width:50px; }
-.div-close { width:30px; }
-.div-user { width:80px; }
-.div-time { width:150px; }
-.div-action { width:60px; }
+.div-id { float:left; width:30px; }
+.div-date { float:left; width:80px; }
+.div-flowid { float:left; width:60px; }
+.div-workslot { float:left; width:30px; }
+.div-explan { float:left; width:300px; }
+.div-priority { float:left; width:50px; }
+.div-close { float:left; width:30px; }
+.div-user { float:left; width:80px; }
+.div-time { float:left; width:150px; }
+.div-action { float:left; width:60px; }
