@@ -267,7 +267,8 @@ td {
  /* text-align: expression((this.cellIndex==0)?"center":"left"); */
 }
 
-.div-daily { width:1000px; display:block; background-color:green; }
+.div-daily { width:1000px; display:block; }
+.div-arrow { float:left; display:inline; width:30px; }
 .div-id { float:left; display:inline; width:30px; }
 .div-date { float:left; display:inline; width:80px; }
 .div-flowid { float:left; display:inline; width:60px; }

@@ -187,8 +187,7 @@ echo "<div class='div-time'>时间</div>";
 echo "<div class='div-action'>Action</div>";
 echo "</div>";
 
-while($row = $sth->fetch())
-{
+while($row = $sth->fetch()){
   $priori = $row['priority'];
   if($priori == 1){
     echo "<div class='div-daily' style='background-color:$alert_color2;'>";
@@ -214,20 +213,27 @@ while($row = $sth->fetch())
   echo "</div>";
 }
 
+function fun_flow($flowid){
+  $sql_div = 'select t1."id",t1."did",t1."flow",t1."bdate",t1."workslot",t1."explan",t1."priority",t1."closed",t2."uname",t1."uptime" from "motor-daily" t1 inner join "sysuser" t2 on t1."uid"=t2."uid" where "flow"=:i1 and "closed"=0 order by "bdate","did"';
+  $sth = $dbh->prepare($sql_div);
+  $sth->bindValue(':i1', $flowid, PDO::PARAM_INT);
+  $sth->execute();
+  $sth_rows = $sth -> rowCount();
+  $int1 = 1;
+  while($row = $sth->fetch()){
+    if($int1 == $sth_rows){
+      echo "<div class='div-daily'><div class='div-arrow'></div><div class='div-id'>$row[1]</div></div>";
+    }else{
+      echo "<div class='div-daily'><div class='div-arrow'></div><div class='div-id'>$row[1]</div></div>";
+    }
+    $flowid1 = $row[1];
+    fun_flow($flowid1);
+  }
 
 
-echo "<div class='div-daily'>";
-echo "<div class='div-id'>ID</div>";
-echo "<div class='div-date'>日期</div>";
-echo "<div class='div-flowid'>Flow ID</div>";
-echo "<div class='div-workslot'>班次</div>";
-echo "<div class='div-explan'>记录</div>";
-echo "<div class='div-priority'>优先级</div>";
-echo "<div class='div-close'>关闭</div>";
-echo "<div class='div-user'>录入</div>";
-echo "<div class='div-time'>时间</div>";
-echo "<div class='div-action'>Action</div>";
-echo "</div>";
+
+}
+
 
 
 
