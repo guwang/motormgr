@@ -195,7 +195,6 @@ while($row = $sth->fetch())
   }else if($priori == 2){
     echo "<div class='div-daily' style='background-color:$alert_color1;'>";
   }
-  echo "<td align=center>$row[1]</td><td>$row[3]</td><td align=center>$row[2]</td>";
   echo "<div class='div-id'>$row[1]</div>";
   echo "<div class='div-date'>$row[3]</div>";
   echo "<div class='div-flowid'>$row[2]</div>";
