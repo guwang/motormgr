@@ -178,6 +178,20 @@ echo "<div class='div-time'>时间</div>";
 echo "<div class='div-action'>Action</div>";
 echo "</div>";
 
+echo "<div class='div-daily'>";
+echo "<div class='div-id'>ID</div>";
+echo "<div class='div-date'>日期</div>";
+echo "<div class='div-flowid'>Flow ID</div>";
+echo "<div class='div-workslot'>班次</div>";
+echo "<div class='div-explan'>记录</div>";
+echo "<div class='div-priority'>优先级</div>";
+echo "<div class='div-close'>关闭</div>";
+echo "<div class='div-user'>录入</div>";
+echo "<div class='div-time'>时间</div>";
+echo "<div class='div-action'>Action</div>";
+echo "</div>";
+
+
 echo "<hr />";
 echo "<div style='width:700px;height:200px'>";
 echo "<h3>录入日志:</h3><br />";
