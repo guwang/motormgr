@@ -267,4 +267,4 @@ td {
  /* text-align: expression((this.cellIndex==0)?"center":"left"); */
 }
 
-.div-daily { width:200px; back-ground:red; }
+.div-daily { width:200px; background-color:red; }
