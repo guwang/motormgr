@@ -215,6 +215,7 @@ while($row = $sth->fetch()){
 }
 
 function fun_flow($flowid){
+  global $dbh;
   $sql_div = 'select t1."id",t1."did",t1."flow",t1."bdate",t1."workslot",t1."explan",t1."priority",t1."closed",t2."uname",t1."uptime" from "motor-daily" t1 inner join "sysuser" t2 on t1."uid"=t2."uid" where "flow"=:i1 and "closed"=0 order by "bdate","did"';
   $sth = $dbh->prepare($sql_div);
   $sth->bindValue(':i1', $flowid, PDO::PARAM_INT);
