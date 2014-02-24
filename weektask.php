@@ -58,11 +58,20 @@ $dbh -> setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 $sth = $dbh->prepare('select "authtype" from "sysdataauth" where "uid"='.$_SESSION['user']['uid'].' and "authsort"=\'view_days\'');
 $sth->execute();
 $row = $sth->fetch();
-$sys_view_days = $row[0];
+$sys_view_days = $row[0];   //用户日常录入时显示的天数
 $sth = $dbh->prepare('select "authtype" from "sysdataauth" where "uid"='.$_SESSION['user']['uid'].' and "authsort"=\'edit_days\'');
 $sth->execute();
 $row = $sth->fetch();
-$sys_edit_days = $row[0];
+$sys_edit_days = $row[0];   //用户日常录入时可以录入的天数
+$sth = $dbh->prepare('select "sysvalue" from "sysconf" where "sysname"=\'warn_power\'');
+$sth->execute();
+$row = $sth->fetch();
+$sys_warn_power = $row[0];   //超过这个功率的设备需要测试温度和振动
+$sth = $dbh->prepare('select "sysvalue" from "sysconf" where "sysname"=\'warn_power_voltage\'');
+$sth->execute();
+$row = $sth->fetch();
+$sys_warn_power_voltage = $row[0];   //超过这个功率的设备需要测试电流
+
 
 $now = date('Y-m-d H:i:s',time());
 $per = date('Ym',time());
@@ -80,6 +89,7 @@ echo "本年第".$weekid."周<br />";
 //$date_begin = date('Y-m-d',strtotime($date) - $date_diff*24*60*60);
 $date_begin = date('Y-m-d',strtotime($date) - $sys_view_days*24*60*60);
 //echo "date_begin:".$date_begin;
+
 
 
 //  echo "<pre>";
@@ -255,7 +265,7 @@ while($row = $sth->fetch()){
 
     if(($diff < $sys_edit_days) & ($diff >= 0)){
       echo "<td><input type='text' name='st".$date_submit."_".$row[3]."' id='".$date_submit."' maxlength='1' value='".$status_getvalue."' style='width:30px;text-align:center;text-transform:uppercase;' /></td>";  //运行状态 运行为1 为运行为2 维护为w
-      if($power > 160){
+      if($power > $sys_warn_power){
 	if($temp1_getvalue > 75 || ($temp1_getvalue == 0 && $status_getvalue != 0)){
 	  echo "<td><input type='text' name='tq".$date_submit."_".$row[3]."' id='tq".$date_submit."' maxlength='3' value='".$temp1_getvalue."' style='width:30px;text-align:center;text-transform:uppercase;color:#FF2608;' /></td>"; //前轴温度
 	}else{
@@ -275,11 +285,6 @@ while($row = $sth->fetch()){
 	  echo "<td><input type='text' name='sh".$date_submit."_".$row[3]."' id='sh".$date_submit."' maxlength='3' value='".$shake2_getvalue."' style='width:30px;text-align:center;text-transform:uppercase;color:#FF2608;' /></td>"; //后轴振动
 	}else{
 	  echo "<td><input type='text' name='sh".$date_submit."_".$row[3]."' id='sh".$date_submit."' maxlength='3' value='".$shake2_getvalue."' style='width:30px;text-align:center;text-transform:uppercase;' /></td>"; //后轴振动
-	}
-	if(($voltage_getvalue / $voltage) >= 0.9 || ($voltage_getvalue == 0 && $status_getvalue != 0)){
-	  echo "<td><input type='text' name='vq".$date_submit."_".$row[3]."' id='vq".$date_submit."' maxlength='5' value='".$voltage_getvalue."' style='width:30px;text-align:center;text-transform:uppercase;color:#FF2608;' /></td>"; //后轴振动
-	}else{
-	  echo "<td><input type='text' name='vq".$date_submit."_".$row[3]."' id='vq".$date_submit."' maxlength='5' value='".$voltage_getvalue."' style='width:30px;text-align:center;text-transform:uppercase;' /></td>"; //后轴振动
 	}
       }else{
 	if($temp1_getvalue > 75){
@@ -303,29 +308,38 @@ while($row = $sth->fetch()){
 	  echo "<td><input type='text' name='sh".$date_submit."_".$row[3]."' id='sh".$date_submit."' maxlength='3' value='".$shake2_getvalue."' style='width:30px;text-align:center;text-transform:uppercase;' /></td>"; //后轴振动
 	}
       }
+      if($power > $sys_warn_power_voltage){
+	if(($voltage_getvalue / $voltage) >= 0.9 || ($voltage_getvalue == 0 && $status_getvalue != 0)){
+	  echo "<td><input type='text' name='vq".$date_submit."_".$row[3]."' id='vq".$date_submit."' maxlength='5' value='".$voltage_getvalue."' style='width:30px;text-align:center;text-transform:uppercase;color:#FF2608;' /></td>"; //电流
+	}else{
+	  echo "<td><input type='text' name='vq".$date_submit."_".$row[3]."' id='vq".$date_submit."' maxlength='5' value='".$voltage_getvalue."' style='width:30px;text-align:center;text-transform:uppercase;' /></td>"; //电流
+	}
+      }else{
+	echo "<td><input type='text' name='vq".$date_submit."_".$row[3]."' id='vq".$date_submit."' maxlength='5' value='".$voltage_getvalue."' style='width:30px;text-align:center;text-transform:uppercase;' /></td>"; //电流
+      }
     }else{
       echo "<td style='text-align:center;'>$status_getvalue</td>";
-      if(($temp1_getvalue == 0 && $power > 160 && $status_getvalue != "0") || $temp1_getvalue > 75){
+      if(($temp1_getvalue == 0 && $power > $sys_warn_power && $status_getvalue != "0") || $temp1_getvalue > 75){
 	echo "<td style='text-align:center;color:#FF2608;'>$temp1_getvalue</td>";
       }else{
 	echo "<td style='text-align:center;'>$temp1_getvalue</td>";
       }
-      if(($temp2_getvalue == 0 && $power > 160 && $status_getvalue != "0") || $temp2_getvalue > 75){
+      if(($temp2_getvalue == 0 && $power > $sys_warn_power && $status_getvalue != "0") || $temp2_getvalue > 75){
 	echo "<td style='text-align:center;color:#FF2608;'>$temp2_getvalue</td>";
       }else{
 	echo "<td style='text-align:center;'>$temp2_getvalue</td>";
       }
-      if(($shake1_getvalue == 0 && $power > 160 && $status_getvalue != "0") || $shake1_getvalue > 2.8){
+      if(($shake1_getvalue == 0 && $power > $sys_warn_power && $status_getvalue != "0") || $shake1_getvalue > 2.8){
 	echo "<td style='text-align:center;color:#FF2608;'>$shake1_getvalue</td>";
       }else{
 	echo "<td style='text-align:center;'>$shake1_getvalue</td>";
       }
-      if(($shake2_getvalue == 0 && $power > 160 && $status_getvalue != "0") || $shake2_getvalue > 2.8){
+      if(($shake2_getvalue == 0 && $power > $sys_warn_power && $status_getvalue != "0") || $shake2_getvalue > 2.8){
 	echo "<td style='text-align:center;color:#FF2608;'>$shake2_getvalue</td>";
       }else{
 	echo "<td style='text-align:center;'>$shake2_getvalue</td>";
       }
-      if(($voltage_getvalue == 0 && $power > 30 && $status_getvalue != "0") || $voltage_getvalue > 5){
+      if(($voltage_getvalue == 0 && $power > $sys_warn_power_voltage && $status_getvalue != "0") || $voltage_getvalue / $sys_warn_power >= 0.9){
 	echo "<td style='text-align:center;color:#FF2608;'>$voltage_getvalue</td>";
       }else{
 	echo "<td style='text-align:center;'>$voltage_getvalue</td>";
