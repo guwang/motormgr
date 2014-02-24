@@ -222,6 +222,7 @@ function fun_flow($flowid){
   $sth->execute();
   $sth_rows = $sth -> rowCount();
   $int1 = 1;
+  $str_div = "";
   while($row = $sth->fetch()){
     if($int1 == $sth_rows){
       $str_div .= "<div class='div-arrow'>箭1</div>";
