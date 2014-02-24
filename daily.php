@@ -143,7 +143,7 @@ if($_SESSION['user']['standing'] == 1){
 }
 $sth->execute();
 echo '<table>';
-echo '<tr><th style="width:80;">日期</th><th>ID</th><th>Flow ID</th><th>班次</th><th style="width:700;">记录</th><th>优先级</th><th>关闭</th><th>录入</th><th>时间</th><th>Action</th></tr>';
+echo '<tr><th>ID</th><th style="width:80;">日期</th><th>Flow ID</th><th>班次</th><th style="width:700;">记录</th><th>优先级</th><th>关闭</th><th>录入</th><th>时间</th><th>Action</th></tr>';
 while($row = $sth->fetch())
 {
   $priori = $row['priority'];
@@ -152,7 +152,7 @@ while($row = $sth->fetch())
   }else if($priori == 2){
     echo "<tr style='background-color:$alert_color1;'>";
   }
-  echo "<td>$row[3]</td><td align=center>$row[1]</td><td align=center>$row[2]</td>";
+  echo "<td align=center>$row[1]</td><td>$row[3]</td><td align=center>$row[2]</td>";
   if($row[4] == 1){
     echo "<td align=center>白</td>";
   }else{
@@ -164,6 +164,7 @@ while($row = $sth->fetch())
 }
 echo '</table>';
 
+echo "<br />";
 echo "<div class='div-daily'>表头</div>";
 
 echo "<hr />";
