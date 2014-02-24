@@ -113,8 +113,9 @@ if(isset($_POST['btn_week'])){
       $update_temp2 = $_POST['th'.$date_int.'_'.$update_siteid];
       $update_shake1 = $_POST['sq'.$date_int.'_'.$update_siteid];
       $update_shake2 = $_POST['sh'.$date_int.'_'.$update_siteid];
+      $update_voltage = $_POST['vq'.$date_int.'_'.$update_siteid];
       //      echo '<br>'.$update_date.' '.$update_siteid.' '.$update_value.' '.$update_temp1.' '.$update_temp2.' '.$update_shake1.' '.$update_shake2;
-      $sth = $dbh->prepare('update "motor-status" set "status"=:i1, "uid"=:i2, "uptime"=:s1, "temp1"=:i3, "temp2"=:i4, "shake1"=:d1, "shake2"=:d2 where "bdate"=:s2 and "siteid"=:s3');
+      $sth = $dbh->prepare('update "motor-status" set "status"=:i1, "uid"=:i2, "uptime"=:s1, "temp1"=:i3, "temp2"=:i4, "shake1"=:d1, "shake2"=:d2, "voltage"=:d3 where "bdate"=:s2 and "siteid"=:s3');
       $sth->bindValue(':i1', $update_value, PDO::PARAM_INT);
       $sth->bindValue(':i2', $_SESSION['user']['uid'], PDO::PARAM_INT);
       $sth->bindValue(':i3', $update_temp1, PDO::PARAM_INT);
@@ -124,6 +125,7 @@ if(isset($_POST['btn_week'])){
       $sth->bindValue(':s1', $now, PDO::PARAM_STR);
       $sth->bindValue(':s2', $update_date, PDO::PARAM_STR);
       $sth->bindValue(':s3', $update_siteid, PDO::PARAM_STR);
+      $sth->bindValue(':d3', $update_voltage, PDO::PARAM_STR);
       $sth->execute();
     }
   }  
