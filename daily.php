@@ -164,6 +164,7 @@ while($row = $sth->fetch())
 }
 echo '</table>';
 
+echo "<div class='div-daily'>表头</div>";
 
 echo "<hr />";
 echo "<div style='width:700px;height:200px'>";
