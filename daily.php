@@ -211,6 +211,7 @@ while($row = $sth->fetch()){
   echo "<div class='div-time'>$row[9]</div>";
   echo "<div class='div-action'><a href='?flowid=".$row[1]."'>Flow</a></div>";
   echo "</div>";
+  fun_flow($row[1]);
 }
 
 function fun_flow($flowid){
