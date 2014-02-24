@@ -224,9 +224,9 @@ function fun_flow($flowid){
   $int1 = 1;
   while($row = $sth->fetch()){
     if($int1 == $sth_rows){
-      echo "<div class='div-daily'><div class='div-arrow'>箭头1</div><div class='div-id'>$row[1]</div></div>";
+      echo "<div class='div-daily'><div class='div-arrow'>箭1</div><div class='div-id'>$row[1]</div><div class='div-date'>$row[3]</div></div>";
     }else{
-      echo "<div class='div-daily'><div class='div-arrow'>箭头2</div><div class='div-id'>$row[1]</div></div>";
+      echo "<div class='div-daily'><div class='div-arrow'>箭2</div><div class='div-id'>$row[1]</div><div class='div-date'>$row[3]</div></div>";
     }
     $flowid1 = $row[1];
     fun_flow($flowid1);
