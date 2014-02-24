@@ -168,6 +168,7 @@ while($row = $sth->fetch()){
   $date_w = $row[6];
   $date_j = $row[7];
   $power = $row['power'];
+  $voltage = $row['voltage'];
   if($date_w) $days_w = (strtotime($date) - strtotime($date_w)) / 86400; else $days_w = "";
   if($date_j) $days_j = (strtotime($date) - strtotime($date_j)) / 86400; else $days_j = "";
   echo "<tr><td align=center>$intId</td>";
@@ -275,6 +276,11 @@ while($row = $sth->fetch()){
 	}else{
 	  echo "<td><input type='text' name='sh".$date_submit."_".$row[3]."' id='sh".$date_submit."' maxlength='3' value='".$shake2_getvalue."' style='width:30px;text-align:center;text-transform:uppercase;' /></td>"; //后轴振动
 	}
+	if(($voltage_getvalue / $voltage) >= 0.9 || ($voltage_getvalue == 0 && $status_getvalue != 0)){
+	  echo "<td><input type='text' name='vq".$date_submit."_".$row[3]."' id='vq".$date_submit."' maxlength='5' value='".$voltage_getvalue."' style='width:30px;text-align:center;text-transform:uppercase;color:#FF2608;' /></td>"; //后轴振动
+	}else{
+	  echo "<td><input type='text' name='vq".$date_submit."_".$row[3]."' id='vq".$date_submit."' maxlength='5' value='".$voltage_getvalue."' style='width:30px;text-align:center;text-transform:uppercase;' /></td>"; //后轴振动
+	}
       }else{
 	if($temp1_getvalue > 75){
 	  echo "<td><input type='text' name='tq".$date_submit."_".$row[3]."' id='tq".$date_submit."' maxlength='3' value='".$temp1_getvalue."' style='width:30px;text-align:center;text-transform:uppercase;color:#FF2608;' /></td>"; //前轴温度
@@ -319,7 +325,7 @@ while($row = $sth->fetch()){
       }else{
 	echo "<td style='text-align:center;'>$shake2_getvalue</td>";
       }
-      if(($voltage_getvalue == 0 && $power > 160 && $status_getvalue != "0") || $voltage_getvalue > 5){
+      if(($voltage_getvalue == 0 && $power > 30 && $status_getvalue != "0") || $voltage_getvalue > 5){
 	echo "<td style='text-align:center;color:#FF2608;'>$voltage_getvalue</td>";
       }else{
 	echo "<td style='text-align:center;'>$voltage_getvalue</td>";
