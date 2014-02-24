@@ -224,12 +224,14 @@ function fun_flow($flowid){
   $int1 = 1;
   while($row = $sth->fetch()){
     if($int1 == $sth_rows){
-      echo "<div class='div-daily'><div class='div-arrow'>箭1</div><div class='div-id'>$row[1]</div><div class='div-date'>$row[3]</div></div>";
+      $str_div .= "<div class='div-arrow'>箭1</div>";
     }else{
-      echo "<div class='div-daily'><div class='div-arrow'>箭2</div><div class='div-id'>$row[1]</div><div class='div-date'>$row[3]</div></div>";
+      $str_div .= "<div class='div-arrow'>箭2</div>";
     }
+    echo "<div class='div-daily'>".$str_div."<div class='div-id'>$row[1]</div><div class='div-date'>$row[3]</div></div>";
     $flowid1 = $row[1];
     fun_flow($flowid1);
+    $int1++;
   }
 
 
@@ -238,7 +240,7 @@ function fun_flow($flowid){
 
 
 
-
+/***  测试递归
 function test($n){
   echo $n." ";
   if($n>0){
@@ -248,9 +250,8 @@ function test($n){
   }
   echo $n." ";
 }
-
 test(10);
-
+***/
 
 echo "<hr />";
 echo "<div style='width:700px;height:200px'>";
