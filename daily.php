@@ -165,6 +165,15 @@ while($row = $sth->fetch())
 echo '</table>';
 
 echo "<br />";
+if($_SESSION['user']['standing'] == 1){
+  $sql = 'select t1."id",t1."did",t1."flow",t1."bdate",t1."workslot",t1."explan",t1."priority",t1."closed",t2."uname",t1."uptime" from "motor-daily" t1 inner join "sysuser" t2 on t1."uid"=t2."uid" where ("bdate">\''.$date_begin.'\' or ("priority">0 and "closed"=0)) and "flow"=0 order by "bdate","did"';
+  $sth = $dbh->prepare($sql);
+}else{
+  $sql = 'select t1."id",t1."did",t1."flow",t1."bdate",t1."workslot",t1."explan",t1."priority",t1."closed",t2."uname",t1."uptime" from "motor-daily" t1 inner join "sysuser" t2 on t1."uid"=t2."uid" where ("bdate">\''.$date_begin.'\' or ("priority">0 and "closed"=0)) and t1."uid"=:i1 and "flow"=0 order by "bdate","did"';
+  $sth = $dbh->prepare($sql);
+  $sth->bindValue(':i1', $_SESSION['user']['uid'], PDO::PARAM_INT);
+}
+$sth->execute();
 echo "<div class='div-daily'>";
 echo "<div class='div-id'>ID</div>";
 echo "<div class='div-date'>日期</div>";
@@ -177,6 +186,33 @@ echo "<div class='div-user'>录入</div>";
 echo "<div class='div-time'>时间</div>";
 echo "<div class='div-action'>Action</div>";
 echo "</div>";
+
+while($row = $sth->fetch())
+{
+  $priori = $row['priority'];
+  if($priori == 1){
+    echo "<div class='div-daily' style='background-color:$alert_color2;'>";
+  }else if($priori == 2){
+    echo "<div class='div-daily' style='background-color:$alert_color1;'>";
+  }
+  echo "<td align=center>$row[1]</td><td>$row[3]</td><td align=center>$row[2]</td>";
+  echo "<div class='div-id'>$row[1]</div>";
+  echo "<div class='div-date'>$row[3]</div>";
+  echo "<div class='div-flowid'>$row[2]</div>";
+  if($row[4] == 1){
+    echo "<div class='div-workslot'>白</div>";
+  }else{
+    echo "<div class='div-workslot'>夜</div>";
+  }
+  echo "<div class='div-explan'>$row[5]</div>";
+  echo "<div class='div-priority'>$row[6]</div>";
+  echo "<div class='div-close'>$row[7]</div>";
+  echo "<div class='div-user'>$row[8]</div>";
+  echo "<div class='div-time'>$row[9]</div>";
+  echo "<div class='div-action'><a href='?flowid=".$row[1]."'>Flow</a></div>";
+}
+
+
 
 echo "<div class='div-daily'>";
 echo "<div class='div-id'>ID</div>";
