@@ -210,6 +210,7 @@ while($row = $sth->fetch())
   echo "<div class='div-user'>$row[8]</div>";
   echo "<div class='div-time'>$row[9]</div>";
   echo "<div class='div-action'><a href='?flowid=".$row[1]."'>Flow</a></div>";
+  echo "</div>";
 }
 
 
