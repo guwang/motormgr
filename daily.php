@@ -192,6 +192,20 @@ echo "<div class='div-action'>Action</div>";
 echo "</div>";
 
 
+
+function test($n){
+  echo $n." ";
+  if($n>0){
+    test($n-1);
+  }else{
+    echo "<-->";
+  }
+  echo $n." ";
+}
+
+test(10);
+
+
 echo "<hr />";
 echo "<div style='width:700px;height:200px'>";
 echo "<h3>录入日志:</h3><br />";
